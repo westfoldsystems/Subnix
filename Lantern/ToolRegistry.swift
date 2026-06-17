@@ -62,6 +62,15 @@ struct OUITool: @MainActor NetworkTool {
     var view: AnyView { AnyView(OUIView()) }
 }
 
+struct PortCheckTool: @MainActor NetworkTool {
+    let id = "portcheck"
+    let name = "TCP Port Check"
+    let summary = "Connect-scan ports on a host you type — open/closed/timed-out."
+    let systemImage = "bolt.horizontal"
+    let category: ToolCategory = .lookup
+    var view: AnyView { AnyView(PortCheckView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -76,10 +85,11 @@ enum ToolRegistry {
         ConvertersTool(),
         // Lookup
         OUITool(),
+        PortCheckTool(),
         // Discovery
         BonjourTool(),
         // Next up (each is a self-contained PR):
-        //   PortCheckTool(), HTTPHeaderTool(), TLSInspectorTool(), WhatsMyIPTool(),
+        //   HTTPHeaderTool(), TLSInspectorTool(), WhatsMyIPTool(),
         //   DNSTool(), PingTool(), LANScannerTool()
     ]
 
