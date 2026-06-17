@@ -98,6 +98,15 @@ struct WhatsMyIPTool: @MainActor NetworkTool {
     var view: AnyView { AnyView(WhatsMyIPView()) }
 }
 
+struct DNSTool: @MainActor NetworkTool {
+    let id = "dns"
+    let name = "DNS Lookup"
+    let summary = "Query A/AAAA/MX/TXT/… against a resolver you pick."
+    let systemImage = "text.magnifyingglass"
+    let category: ToolCategory = .lookup
+    var view: AnyView { AnyView(DNSView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -116,10 +125,11 @@ enum ToolRegistry {
         HTTPHeaderTool(),
         TLSInspectorTool(),
         WhatsMyIPTool(),
+        DNSTool(),
         // Discovery
         BonjourTool(),
         // Next up (each is a self-contained PR):
-        //   DNSTool(), PingTool(), LANScannerTool()
+        //   PingTool(), LANScannerTool()
     ]
 
     static func tools(in category: ToolCategory) -> [any NetworkTool] {
