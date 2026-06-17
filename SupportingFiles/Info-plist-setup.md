@@ -56,6 +56,24 @@ Almost everything is on-device. The **only** outbound connections are:
 Local interface enumeration (What's My IP) uses `getifaddrs` — that's a local
 syscall, not a network call.
 
+### Phase 3 (Diagnostics + Discovery)
+
+- **DNS Lookup** contacts only the resolver the user selects (1.1.1.1 / 8.8.8.8
+  / 9.9.9.9 / a custom IP) over UDP, falling back to TCP on a truncated reply. A
+  "System resolver" option is intentionally not shipped — discovering it needs
+  `res_getservers` via a C bridging header and is sandbox-variable.
+- **Ping** sends ICMP echo to the typed host via an unprivileged `SOCK_DGRAM`
+  socket. Verified unsandboxed on macOS; inbound ICMP replies are **dropped by
+  the macOS app-sandbox** (no entitlement covers them) so the sandboxed mac build
+  shows 100% loss. iOS-device behaviour is unverified.
+- **LAN Scanner** sweeps the local /24 with TCP connects (which also populate the
+  ARP cache) and reads the cache via `sysctl(NET_RT_FLAGS)`. Uses
+  `NSLocalNetworkUsageDescription` (already declared for Bonjour). The ARP read
+  is **macOS-only** — `rt_msghdr` isn't in Swift's iOS Darwin overlay; on iOS the
+  scanner returns liveness + hostname but no MAC/vendor until a bridging-header
+  path is validated on a device. On macOS 15+ / iOS the OS shows a local-network
+  permission prompt on first scan.
+
 ---
 
 ## OUI database — ✅ SOURCED (IEEE MA-L registry)

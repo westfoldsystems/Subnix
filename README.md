@@ -30,7 +30,10 @@ main actor with `Task { @MainActor in … }`.
 | HTTP Header Inspector | Lookup | Redirect chain + response & security headers | Typed host only |
 | TLS Certificate Inspector | Lookup | Certificate chain, SANs, validity, key | Typed host only |
 | What's My IP | Lookup | All local interfaces; public IP on an opt-in tap | Local + opt-in reflection |
+| DNS Lookup | Lookup | A/AAAA/MX/TXT/… via a hand-rolled wire codec, UDP+TCP | Chosen resolver |
+| Ping | Diagnostics | ICMP echo: RTT, loss, min/avg/max/stddev | Typed host only |
 | Bonjour Discovery | Discovery | mDNS/Bonjour services on the local network | LAN only |
+| LAN Scanner | Discovery | Sweep the /24 → live hosts + MAC + vendor + hostname | LAN only |
 
 ## Roadmap
 
@@ -38,11 +41,28 @@ main actor with `Task { @MainActor in … }`.
   MAC Vendor Lookup (IEEE MA-L bundled).
 - **Phase 2 — Lookup (per-host network tools).** ✅ Shipped. TCP Port Check,
   HTTP Header Inspector, TLS Certificate Inspector, What's My IP.
-- **Phase 3 — Diagnostics + Discovery (sandbox-constrained).** ⏳ Planned.
-  DNS Lookup (custom wire-format codec, UDP + TCP fallback), Ping (ICMP), and the
-  hero **LAN Scanner** (sweep → ARP via `sysctl` → reverse-DNS + Bonjour + OUI).
-  Traceroute is deliberately omitted (iOS sandbox makes TTL-limited probes
-  unreliable).
+- **Phase 3 — Diagnostics + Discovery (sandbox-constrained).** ✅ Shipped, with
+  device caveats below. DNS Lookup (hardened wire codec, UDP + TCP fallback),
+  Ping (clean-room SOCK_DGRAM ICMP), and the hero **LAN Scanner**
+  (TCP sweep → ARP via `sysctl` → reverse-DNS + OUI).
+  Traceroute remains deliberately omitted — TTL-limited probes are unreliable in
+  the iOS sandbox.
+
+## Verification status
+
+Pure engines are unit-tested (79 tests). Network/socket tools were validated on
+**macOS with a real network**; **no physical iPhone was available, so iOS-device
+behaviour is UNVERIFIED** for the sandbox-sensitive tools:
+
+| Tool | macOS | iOS device | Notes |
+|---|---|---|---|
+| DNS Lookup | ✅ codec + live UDP/TCP | ⚠️ unverified | "System" resolver deferred (needs C bridging) |
+| Ping (ICMP) | ⚠️ socket opens/sends; **replies blocked by macOS sandbox** | ⚠️ unverified | Logic verified unsandboxed; likely works on device |
+| LAN Scanner | ✅ sweep + `sysctl` ARP + enrichment | ⚠️ unverified | ARP read is **macOS-only** (`rt_msghdr` absent on iOS); iOS gets liveness+hostname, no MAC |
+
+Bonjour cross-reference in the LAN Scanner is not implemented — `BonjourScanner`
+captures service names but not resolved IPs, so there's no honest IP↔service join
+without address resolution the app doesn't do.
 
 ## Building & testing
 
