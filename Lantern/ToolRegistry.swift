@@ -26,6 +26,42 @@ struct BonjourTool: @MainActor NetworkTool {
     var view: AnyView { AnyView(BonjourView()) }
 }
 
+struct VLSMTool: @MainActor NetworkTool {
+    let id = "vlsm"
+    let name = "VLSM Planner"
+    let summary = "Pack named subnets into a base block, largest-first — offline."
+    let systemImage = "square.grid.3x3.topleft.filled"
+    let category: ToolCategory = .calculators
+    var view: AnyView { AnyView(VLSMView()) }
+}
+
+struct IPv6Tool: @MainActor NetworkTool {
+    let id = "ipv6"
+    let name = "IPv6 Toolkit"
+    let summary = "Compress/expand, prefix math, and EUI-64 — fully offline."
+    let systemImage = "6.circle"
+    let category: ToolCategory = .calculators
+    var view: AnyView { AnyView(IPv6View()) }
+}
+
+struct ConvertersTool: @MainActor NetworkTool {
+    let id = "converters"
+    let name = "Converters"
+    let summary = "IPv4 base conversion and MAC normalisation — offline."
+    let systemImage = "arrow.left.arrow.right"
+    let category: ToolCategory = .calculators
+    var view: AnyView { AnyView(ConvertersView()) }
+}
+
+struct OUITool: @MainActor NetworkTool {
+    let id = "oui"
+    let name = "MAC Vendor Lookup"
+    let summary = "Resolve a MAC's manufacturer from a bundled IEEE table — offline."
+    let systemImage = "barcode.viewfinder"
+    let category: ToolCategory = .lookup
+    var view: AnyView { AnyView(OUIView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -33,12 +69,18 @@ enum ToolRegistry {
     /// The single source of truth for what ships. Order within a category is
     /// preserved in the sidebar.
     static let all: [any NetworkTool] = [
+        // Calculators (pure, offline)
         SubnetTool(),
+        VLSMTool(),
+        IPv6Tool(),
+        ConvertersTool(),
+        // Lookup
+        OUITool(),
+        // Discovery
         BonjourTool(),
         // Next up (each is a self-contained PR):
-        //   VLSMTool(), IPv6Tool(), MACVendorTool(),
-        //   PingTool(), TracerouteTool(), DNSTool(),
-        //   PortCheckTool(), TLSInspectorTool(), WhatsMyIPTool()
+        //   PortCheckTool(), HTTPHeaderTool(), TLSInspectorTool(), WhatsMyIPTool(),
+        //   DNSTool(), PingTool(), LANScannerTool()
     ]
 
     static func tools(in category: ToolCategory) -> [any NetworkTool] {

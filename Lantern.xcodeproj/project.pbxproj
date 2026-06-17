@@ -8,18 +8,8 @@
 
 /* Begin PBXFileReference section */
 		5ECB9C5D2FE22C05008F33C0 /* Lantern.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lantern.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EB0000000000000000000A2 /* LanternTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LanternTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		5ECB9C5F2FE22C05008F33C0 /* Lantern */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				5ECB9C6B2FE22C07008F33C0 /* Exceptions for "Lantern" folder in "Lantern" target */,
-			);
-			path = Lantern;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		5ECB9C6B2FE22C07008F33C0 /* Exceptions for "Lantern" folder in "Lantern" target */ = {
@@ -31,8 +21,41 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		5ECB9C5F2FE22C05008F33C0 /* Lantern */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5ECB9C6B2FE22C07008F33C0 /* Exceptions for "Lantern" folder in "Lantern" target */,
+			);
+			path = Lantern;
+			sourceTree = "<group>";
+		};
+		7EB0000000000000000000A3 /* LanternTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LanternTests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXContainerItemProxy section */
+		7EB0000000000000000000A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5ECB9C552FE22C05008F33C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5ECB9C5C2FE22C05008F33C0;
+			remoteInfo = Lantern;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		5ECB9C5A2FE22C05008F33C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EB0000000000000000000A5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				5ECB9C5F2FE22C05008F33C0 /* Lantern */,
+				7EB0000000000000000000A3 /* LanternTests */,
 				5ECB9C5E2FE22C05008F33C0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				5ECB9C5D2FE22C05008F33C0 /* Lantern.app */,
+				7EB0000000000000000000A2 /* LanternTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +108,29 @@
 			productReference = 5ECB9C5D2FE22C05008F33C0 /* Lantern.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7EB0000000000000000000A1 /* LanternTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7EB0000000000000000000A9 /* Build configuration list for PBXNativeTarget "LanternTests" */;
+			buildPhases = (
+				7EB0000000000000000000A4 /* Sources */,
+				7EB0000000000000000000A5 /* Frameworks */,
+				7EB0000000000000000000A6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7EB0000000000000000000A7 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7EB0000000000000000000A3 /* LanternTests */,
+			);
+			name = LanternTests;
+			packageProductDependencies = (
+			);
+			productName = LanternTests;
+			productReference = 7EB0000000000000000000A2 /* LanternTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -95,6 +143,10 @@
 				TargetAttributes = {
 					5ECB9C5C2FE22C05008F33C0 = {
 						CreatedOnToolsVersion = 26.5;
+					};
+					7EB0000000000000000000A1 = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = 5ECB9C5C2FE22C05008F33C0;
 					};
 				};
 			};
@@ -113,12 +165,20 @@
 			projectRoot = "";
 			targets = (
 				5ECB9C5C2FE22C05008F33C0 /* Lantern */,
+				7EB0000000000000000000A1 /* LanternTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5ECB9C5B2FE22C05008F33C0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EB0000000000000000000A6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +195,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7EB0000000000000000000A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7EB0000000000000000000A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5ECB9C5C2FE22C05008F33C0 /* Lantern */;
+			targetProxy = 7EB0000000000000000000A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5ECB9C662FE22C07008F33C0 /* Debug */ = {
@@ -272,7 +347,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Lantern/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription ="Lantern discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Lantern contacts no servers.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Lantern discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Lantern contacts no servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -308,7 +383,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Lantern/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription ="Lantern discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Lantern contacts no servers.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Lantern discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Lantern contacts no servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -333,6 +408,50 @@
 			};
 			name = Release;
 		};
+		7EB0000000000000000000AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.LanternTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lantern.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lantern";
+			};
+			name = Debug;
+		};
+		7EB0000000000000000000AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.LanternTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lantern.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lantern";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -350,6 +469,15 @@
 			buildConfigurations = (
 				5ECB9C692FE22C07008F33C0 /* Debug */,
 				5ECB9C6A2FE22C07008F33C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7EB0000000000000000000A9 /* Build configuration list for PBXNativeTarget "LanternTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7EB0000000000000000000AA /* Debug */,
+				7EB0000000000000000000AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
