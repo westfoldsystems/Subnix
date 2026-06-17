@@ -69,24 +69,37 @@ struct ConvertersView: View {
             }
         }
         .formStyle(.grouped)
-        .onChange(of: ipv4Input) { _, _ in convertIPv4() }
-        .onChange(of: ipv4Format) { _, _ in convertIPv4() }
+        .onChange(of: ipv4Input) { _, newInput in convertIPv4(newInput, as: ipv4Format) }
+        .onChange(of: ipv4Format) { _, newFormat in reformatIPv4(to: newFormat) }
         .onChange(of: macInput) { _, _ in convertMAC() }
         .onAppear {
-            convertIPv4()
+            convertIPv4(ipv4Input, as: ipv4Format)
             convertMAC()
         }
     }
 
-    private func convertIPv4() {
+    private func convertIPv4(_ text: String, as format: IPv4Converter.Format) {
         do {
-            let value = try IPv4Converter.parse(ipv4Input, as: ipv4Format)
+            let value = try IPv4Converter.parse(text, as: format)
             ipv4Forms = IPv4Converter.forms(from: value)
             ipv4Error = nil
         } catch {
             ipv4Forms = nil
             ipv4Error = (error as? LocalizedError)?.errorDescription
                       ?? error.localizedDescription
+        }
+    }
+
+    /// Flipping the input format transcodes the current value into the new
+    /// format rather than reinterpreting the old text — so picking "Hex" while
+    /// the field reads 192.168.1.1 rewrites it to 0xC0A80101 instead of erroring.
+    private func reformatIPv4(to newFormat: IPv4Converter.Format) {
+        if let forms = ipv4Forms {
+            let text = forms.string(for: newFormat)
+            ipv4Input = text
+            convertIPv4(text, as: newFormat)
+        } else {
+            convertIPv4(ipv4Input, as: newFormat)
         }
     }
 

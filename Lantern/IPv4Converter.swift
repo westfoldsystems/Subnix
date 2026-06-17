@@ -27,6 +27,17 @@ struct IPv4Converter {
         let hex: String         // 0xC0A80100
         let binary: String      // 11000000.10101000.00000001.00000000
         let integer: String     // 3232235776
+
+        /// The rendering for a given format — used to transcode a field when the
+        /// user flips the input format.
+        func string(for format: Format) -> String {
+            switch format {
+            case .dotted:  return dotted
+            case .hex:     return hex
+            case .binary:  return binary
+            case .integer: return integer
+            }
+        }
     }
 
     enum ConvertError: LocalizedError, Equatable {

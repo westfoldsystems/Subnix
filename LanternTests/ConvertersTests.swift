@@ -40,6 +40,15 @@ struct IPv4ConverterTests {
         }
     }
 
+    @Test func transcodesBetweenFormats() {
+        // Flipping the input format renders the same value in the new notation.
+        let forms = IPv4Converter.forms(from: 3_232_235_777)   // 192.168.1.1
+        #expect(forms.string(for: .dotted) == "192.168.1.1")
+        #expect(forms.string(for: .hex) == "0xC0A80101")
+        #expect(forms.string(for: .binary) == "11000000.10101000.00000001.00000001")
+        #expect(forms.string(for: .integer) == "3232235777")
+    }
+
     @Test func rejectsMalformedAndOutOfRange() {
         #expect(throws: IPv4Converter.ConvertError.self) { try IPv4Converter.parse("999.1.1.1", as: .dotted) }
         #expect(throws: IPv4Converter.ConvertError.self) { try IPv4Converter.parse("0xGG", as: .hex) }
