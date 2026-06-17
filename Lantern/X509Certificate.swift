@@ -37,8 +37,12 @@ struct X509Certificate: Sendable {
     /// One tag-length-value triple. `start..<end` is the *content* (value).
     private struct TLV { let tag: UInt8; let start: Int; let length: Int; let end: Int }
 
-    private static func parseTLV(_ b: [UInt8], _ p: Int) -> TLV? {
-        guard p + 1 < b.count else { return nil }
+    /// Parse one TLV at `p`, bounded by `limit` (its container's end, never past
+    /// the buffer). Rejects indefinite-length (0x80), >4-byte lengths, and any
+    /// content that would run past the limit.
+    private static func parseTLV(_ b: [UInt8], _ p: Int, limit: Int) -> TLV? {
+        let bound = min(limit, b.count)
+        guard p >= 0, p + 1 < bound else { return nil }
         let tag = b[p]
         var i = p + 1
         let first = b[i]; i += 1
@@ -48,20 +52,20 @@ struct X509Certificate: Sendable {
             length = Int(first)
         } else {
             let count = Int(first & 0x7F)
-            guard count > 0, count <= 4, i + count <= b.count else { return nil }
+            guard count > 0, count <= 4, i + count <= bound else { return nil }
             for _ in 0..<count { length = (length << 8) | Int(b[i]); i += 1 }
         }
         let end = i + length
-        guard end <= b.count else { return nil }
+        guard length >= 0, end <= bound else { return nil }
         return TLV(tag: tag, start: i, length: length, end: end)
     }
 
-    /// All TLVs directly inside `[start, end)`.
+    /// All TLVs directly inside `[start, end)`; each child is bounded by `end`.
     private static func children(_ b: [UInt8], _ start: Int, _ end: Int) -> [TLV] {
         var result: [TLV] = []
         var p = start
         while p < end {
-            guard let tlv = parseTLV(b, p) else { break }
+            guard let tlv = parseTLV(b, p, limit: end) else { break }
             result.append(tlv)
             p = tlv.end
         }
@@ -72,7 +76,7 @@ struct X509Certificate: Sendable {
 
     static func parse(der b: [UInt8]) -> X509Certificate? {
         // Certificate ::= SEQUENCE { tbsCertificate, signatureAlgorithm, signatureValue }
-        guard let cert = parseTLV(b, 0), cert.tag == 0x30 else { return nil }
+        guard let cert = parseTLV(b, 0, limit: b.count), cert.tag == 0x30 else { return nil }
         let top = children(b, cert.start, cert.end)
         guard top.count >= 2, top[0].tag == 0x30 else { return nil }
 
@@ -130,7 +134,7 @@ struct X509Certificate: Sendable {
                   let octet = parts.last(where: { $0.tag == 0x04 }) else { continue }
 
             // extnValue OCTET STRING wraps a SEQUENCE OF GeneralName.
-            guard let sanSeq = parseTLV(b, octet.start), sanSeq.tag == 0x30 else { return [] }
+            guard let sanSeq = parseTLV(b, octet.start, limit: octet.end), sanSeq.tag == 0x30 else { return [] }
             return children(b, sanSeq.start, sanSeq.end).compactMap { generalName(b, $0) }
         }
         return []
