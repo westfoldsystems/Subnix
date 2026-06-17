@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- App Sandbox on: the macOS app runs confined, like its iOS sibling. -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	<!-- Outbound client networking only. This is all the Bonjour LAN browse
+	     needs. Deliberately NO network.server, NO file access, NO anything
+	     else — nothing leaves the LAN and the app holds no broader privilege. -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+</dict>
+</plist>
