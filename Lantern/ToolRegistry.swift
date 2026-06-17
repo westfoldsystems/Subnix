@@ -116,6 +116,15 @@ struct PingTool: @MainActor NetworkTool {
     var view: AnyView { AnyView(PingView()) }
 }
 
+struct LANScannerTool: @MainActor NetworkTool {
+    let id = "lanscan"
+    let name = "LAN Scanner"
+    let summary = "Find live hosts on your subnet with MAC, vendor, and hostname."
+    let systemImage = "rectangle.3.group"
+    let category: ToolCategory = .discovery
+    var view: AnyView { AnyView(LANScannerView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -139,8 +148,7 @@ enum ToolRegistry {
         PingTool(),
         // Discovery
         BonjourTool(),
-        // Next up (each is a self-contained PR):
-        //   LANScannerTool()
+        LANScannerTool(),
     ]
 
     static func tools(in category: ToolCategory) -> [any NetworkTool] {
