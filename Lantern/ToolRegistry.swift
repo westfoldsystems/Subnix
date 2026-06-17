@@ -80,6 +80,15 @@ struct HTTPHeaderTool: @MainActor NetworkTool {
     var view: AnyView { AnyView(HTTPHeaderView()) }
 }
 
+struct TLSInspectorTool: @MainActor NetworkTool {
+    let id = "tls"
+    let name = "TLS Certificate Inspector"
+    let summary = "Read a host's TLS certificate — SANs, validity, key, chain."
+    let systemImage = "lock.shield"
+    let category: ToolCategory = .lookup
+    var view: AnyView { AnyView(TLSCertificateView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -96,10 +105,11 @@ enum ToolRegistry {
         OUITool(),
         PortCheckTool(),
         HTTPHeaderTool(),
+        TLSInspectorTool(),
         // Discovery
         BonjourTool(),
         // Next up (each is a self-contained PR):
-        //   TLSInspectorTool(), WhatsMyIPTool(),
+        //   WhatsMyIPTool(),
         //   DNSTool(), PingTool(), LANScannerTool()
     ]
 
