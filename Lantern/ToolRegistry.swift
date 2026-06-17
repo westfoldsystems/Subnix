@@ -71,6 +71,15 @@ struct PortCheckTool: @MainActor NetworkTool {
     var view: AnyView { AnyView(PortCheckView()) }
 }
 
+struct HTTPHeaderTool: @MainActor NetworkTool {
+    let id = "httpheaders"
+    let name = "HTTP Header Inspector"
+    let summary = "Follow the redirect chain and inspect response + security headers."
+    let systemImage = "list.bullet.rectangle"
+    let category: ToolCategory = .lookup
+    var view: AnyView { AnyView(HTTPHeaderView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -86,10 +95,11 @@ enum ToolRegistry {
         // Lookup
         OUITool(),
         PortCheckTool(),
+        HTTPHeaderTool(),
         // Discovery
         BonjourTool(),
         // Next up (each is a self-contained PR):
-        //   HTTPHeaderTool(), TLSInspectorTool(), WhatsMyIPTool(),
+        //   TLSInspectorTool(), WhatsMyIPTool(),
         //   DNSTool(), PingTool(), LANScannerTool()
     ]
 
