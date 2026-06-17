@@ -89,6 +89,15 @@ struct TLSInspectorTool: @MainActor NetworkTool {
     var view: AnyView { AnyView(TLSCertificateView()) }
 }
 
+struct WhatsMyIPTool: @MainActor NetworkTool {
+    let id = "whatsmyip"
+    let name = "What’s My IP"
+    let summary = "All local interface addresses; public IP on an opt-in tap."
+    let systemImage = "globe"
+    let category: ToolCategory = .lookup
+    var view: AnyView { AnyView(WhatsMyIPView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -106,10 +115,10 @@ enum ToolRegistry {
         PortCheckTool(),
         HTTPHeaderTool(),
         TLSInspectorTool(),
+        WhatsMyIPTool(),
         // Discovery
         BonjourTool(),
         // Next up (each is a self-contained PR):
-        //   WhatsMyIPTool(),
         //   DNSTool(), PingTool(), LANScannerTool()
     ]
 

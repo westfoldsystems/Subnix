@@ -33,13 +33,28 @@ macOS sandbox (`Lantern/Lantern.entitlements`, applied via
 
 ## External endpoints
 
-**Phase 1 tools make zero network calls.** Everything is pure on-device compute
-or reads from a bundled file.
+Almost everything is on-device. The **only** outbound connections are:
 
-The first and only deliberate external call arrives in Phase 2 with **What's My
-IP** (public-IP reflection). When it lands it must be listed here with its exact
-endpoint, be opt-in (a tap, never automatic), and be labelled in-UI. Until then
-there is nothing to disclose.
+- **Per-host tools** (TCP Port Check, HTTP Header Inspector, TLS Certificate
+  Inspector) contact exactly the host the user types — nothing else. Local-only
+  in spirit.
+- **What's My IP — public-IP reflection.** The single deliberate third-party
+  call. **Opt-in only** (a tap; never automatic), IPv4 and IPv6 are independent,
+  and the UI names the provider contacted. Each family tries its provider then a
+  fallback:
+
+  | Family | Provider (primary) | Fallback |
+  |---|---|---|
+  | IPv4 | `https://1.1.1.1/cdn-cgi/trace` (parse `ip=`) | `https://api.ipify.org?format=json` |
+  | IPv6 | `https://[2606:4700:4700::1111]/cdn-cgi/trace` | `https://api6.ipify.org?format=json` |
+
+  IP literals pin the address family (the literals are valid SANs on Cloudflare's
+  cert; ipify's `api`/`api6` hostnames are family-specific). Nothing is sent but
+  the request itself; the response is the caller's own public IP. No analytics,
+  no identifiers.
+
+Local interface enumeration (What's My IP) uses `getifaddrs` — that's a local
+syscall, not a network call.
 
 ---
 
