@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		7EB0000000000000000000A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5ECB9C552FE22C05008F33C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5ECB9C5C2FE22C05008F33C0;
+			remoteInfo = Lantern;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5ECB9C5D2FE22C05008F33C0 /* Lantern.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lantern.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EB0000000000000000000A2 /* LanternTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LanternTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,16 +46,6 @@
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
-
-/* Begin PBXContainerItemProxy section */
-		7EB0000000000000000000A8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5ECB9C552FE22C05008F33C0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5ECB9C5C2FE22C05008F33C0;
-			remoteInfo = Lantern;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5ECB9C5A2FE22C05008F33C0 /* Frameworks */ = {

@@ -8,8 +8,8 @@ import SwiftUI
 
 struct OUIView: View {
     @State private var macInput = "00:1b:63:84:45:e6"
-    // Loaded once from the bundle; empty until a database is sourced.
-    private let database = OUILookup.bundled()
+    // Parsed once at first use; empty only if no database is bundled.
+    private let database = OUILookup.shared
 
     private var parsedMAC: MACAddress? { try? MACAddress.parse(macInput) }
 

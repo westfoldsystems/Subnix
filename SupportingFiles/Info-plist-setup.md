@@ -43,12 +43,24 @@ there is nothing to disclose.
 
 ---
 
-## OUI database — ⚠️ SOURCING DECISION REQUIRED
+## OUI database — ✅ SOURCED (IEEE MA-L registry)
 
-The **MAC Vendor Lookup** engine (`OUILookup.swift`) is complete and tested, but
-**ships no vendor data** — that's a deliberate stop. No vendor names are invented
-or hardcoded anywhere in the app. Until a database is bundled the tool renders a
-clear "No OUI database bundled" state.
+The **MAC Vendor Lookup** is backed by the official IEEE MA-L registry, bundled
+offline. No vendor names are invented or hardcoded; the data is the IEEE file,
+converted verbatim.
+
+- **Source:** `https://standards-oui.ieee.org/oui/oui.csv` (the public MA-L
+  registry).
+- **Bundled file:** `Lantern/oui-mal.tsv` (~39.5k assignments, ~1.2 MB). Picked
+  up automatically by the synchronized `Lantern` group → Copy Bundle Resources;
+  read at runtime via `Bundle.main`, parsed once into `OUILookup.shared`.
+- **Refreshing:** re-download `oui.csv`, keep `Registry == MA-L` rows, and emit
+  `Assignment<TAB>Organization Name` (collapsing internal whitespace) over the
+  bundled file. The app needs no code changes.
+- **Still open:** MA-M (28-bit) and MA-S (36-bit) assignments are not bundled —
+  v1 is MA-L only (see schema note below).
+- **No network at runtime:** the download is a build-time/maintenance step; the
+  app never contacts IEEE.
 
 ### What the engine expects
 
