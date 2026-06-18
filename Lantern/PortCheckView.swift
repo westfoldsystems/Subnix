@@ -61,7 +61,7 @@ struct PortCheckView: View {
             if !scanner.results.isEmpty {
                 Section(resultsHeader) {
                     ForEach(scanner.results) { result in
-                        ResultRow(label(for: result), value(for: result))
+                        ResultRow(label(for: result), value(for: result), valueColor: color(for: result))
                     }
                 }
             }
@@ -127,6 +127,15 @@ struct PortCheckView: View {
         case .closed:        return "closed"
         case .timedOut:      return "timed out"
         case .error(let m):  return "error · \(m)"
+        }
+    }
+
+    private func color(for result: PortProbeResult) -> Color {
+        switch result.status {
+        case .open:     .statusOnline
+        case .closed:   .statusError
+        case .timedOut: .statusTimeout
+        case .error:    .statusTimeout
         }
     }
 }

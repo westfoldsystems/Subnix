@@ -15,10 +15,13 @@ import AppKit
 struct ResultRow: View {
     let label: String
     let value: String
+    /// Value text color — defaults to ink; status rows pass a status token.
+    var valueColor: Color
 
-    init(_ label: String, _ value: String) {
+    init(_ label: String, _ value: String, valueColor: Color = .octetInk) {
         self.label = label
         self.value = value
+        self.valueColor = valueColor
     }
 
     var body: some View {
@@ -29,7 +32,7 @@ struct ResultRow: View {
             Spacer(minLength: 12)
             Text(value)
                 .font(.system(.body, design: .monospaced))
-                .foregroundStyle(.octetInk)
+                .foregroundStyle(valueColor)
                 .multilineTextAlignment(.trailing)
                 .textSelection(.enabled)
         }

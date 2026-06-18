@@ -38,7 +38,9 @@ struct PingView: View {
                 Section("Summary") {
                     ResultRow("Transmitted", "\(stats.transmitted)")
                     ResultRow("Received", "\(stats.received)")
-                    ResultRow("Loss", String(format: "%.0f%%", stats.lossPercent))
+                    ResultRow("Loss", String(format: "%.0f%%", stats.lossPercent),
+                              valueColor: stats.lossPercent == 0 ? .statusOnline
+                                        : stats.lossPercent >= 100 ? .statusError : .statusTimeout)
                     if let mn = stats.minMS, let avg = stats.avgMS, let mx = stats.maxMS, let sd = stats.stddevMS {
                         ResultRow("min/avg/max", String(format: "%.1f / %.1f / %.1f ms", mn, avg, mx))
                         ResultRow("stddev", String(format: "%.1f ms", sd))
@@ -48,7 +50,8 @@ struct PingView: View {
                     Section("Packets") {
                         ForEach(engine.probes) { probe in
                             ResultRow("seq \(probe.seq)",
-                                      probe.rtt.map { String(format: "%.1f ms", $0 * 1000) } ?? "timed out")
+                                      probe.rtt.map { String(format: "%.1f ms", $0 * 1000) } ?? "timed out",
+                                      valueColor: probe.rtt == nil ? .statusTimeout : .statusOnline)
                         }
                     }
                 }

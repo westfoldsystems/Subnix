@@ -34,11 +34,15 @@ struct LANScannerView: View {
             if !scanner.hosts.isEmpty {
                 Section("Hosts") {
                     ForEach(scanner.hosts) { host in
-                        VStack(alignment: .leading, spacing: 2) {
-                            ResultRow(host.hostname ?? host.ip, host.mac ?? "—")
-                            if host.hostname != nil { Text(host.ip).font(.caption2).foregroundStyle(.octetMuted) }
-                            if let vendor = host.vendor {
-                                Text(vendor).font(.caption2).foregroundStyle(.octetMuted)
+                        HStack(alignment: .top, spacing: 10) {
+                            // Every host that turns up in the sweep is live.
+                            Circle().fill(.statusOnline).frame(width: 8, height: 8).padding(.top, 6)
+                            VStack(alignment: .leading, spacing: 2) {
+                                ResultRow(host.hostname ?? host.ip, host.mac ?? "—")
+                                if host.hostname != nil { Text(host.ip).font(.caption2).foregroundStyle(.octetMuted) }
+                                if let vendor = host.vendor {
+                                    Text(vendor).font(.caption2).foregroundStyle(.octetMuted)
+                                }
                             }
                         }
                     }
