@@ -8,6 +8,11 @@ import SwiftUI
 
 struct RootView: View {
     @State private var selectedToolID: String?
+    @AppStorage(AppearanceMode.storageKey) private var appearanceRaw = AppearanceMode.system.rawValue
+
+    private var appearance: AppearanceMode {
+        AppearanceMode(rawValue: appearanceRaw) ?? .system
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -22,6 +27,7 @@ struct RootView: View {
                 }
             }
             .navigationTitle("Octet")
+            .toolbar { appearanceMenu }
             #if os(macOS)
             .frame(minWidth: 230)
             #endif
@@ -39,6 +45,27 @@ struct RootView: View {
                     systemImage: "square.grid.2x2",
                     description: Text("Everything runs on-device. No account, no telemetry, nothing leaves this device.")
                 )
+            }
+        }
+        // Apply the chosen appearance to the whole window; .system passes nil
+        // (defers to the OS).
+        .preferredColorScheme(appearance.colorScheme)
+    }
+
+    private var appearanceMenu: some ToolbarContent {
+        ToolbarItem {
+            Menu {
+                Picker("Appearance", selection: Binding(
+                    get: { appearance },
+                    set: { appearanceRaw = $0.rawValue }
+                )) {
+                    ForEach(AppearanceMode.allCases) { mode in
+                        Label(mode.label, systemImage: mode.systemImage).tag(mode)
+                    }
+                }
+                .pickerStyle(.inline)
+            } label: {
+                Label("Appearance", systemImage: appearance.systemImage)
             }
         }
     }
