@@ -68,6 +68,30 @@ Bonjour cross-reference in the LAN Scanner is not implemented — `BonjourScanne
 captures service names but not resolved IPs, so there's no honest IP↔service join
 without address resolution the app doesn't do.
 
+## Brand colors
+
+The palette lives as Asset Catalog color sets in `Assets.xcassets` (each with a
+light and a warm-dark variant). With Swift asset-symbol generation on, every set
+is exposed as a semantic token usable in any style position — no hex in views:
+
+```swift
+Text(value).foregroundStyle(.octetInk)        // primary text
+Text(label).foregroundStyle(.octetMuted)      // secondary text
+Circle().fill(.statusOnline)                  // status
+.background(.octetSurface)                     // cards/rows
+```
+
+Tokens: `.octetPaper`, `.octetSurface`, `.octetHairline`, `.octetInk`,
+`.octetMuted`, `.octetAccent`, `.octetAccentDeep`, `.octetTint`, `.statusOnline`,
+`.statusOffline`, `.statusTimeout`, `.statusError`.
+
+`ResultRow` is wired as the reference example. **Roll-out:** screen by screen,
+replace ad-hoc styles with tokens — `.secondary` → `.octetMuted`, the orange
+warning labels → `.statusTimeout`, port/ping status text → `.statusOnline` /
+`.statusError`, and set `.octetPaper` as the list/form background with
+`.octetSurface` rows. Set the app `.tint(.octetAccent)` once at the `RootView`
+level to recolor controls globally.
+
 ## Building & testing
 
 ```sh

@@ -22,12 +22,14 @@ struct ResultRow: View {
     }
 
     var body: some View {
+        // Reference wiring of the Octet color tokens (see Color+Octet.swift).
         HStack(alignment: .firstTextBaseline) {
             Text(label)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.octetMuted)
             Spacer(minLength: 12)
             Text(value)
                 .font(.system(.body, design: .monospaced))
+                .foregroundStyle(.octetInk)
                 .multilineTextAlignment(.trailing)
                 .textSelection(.enabled)
         }
@@ -37,6 +39,7 @@ struct ResultRow: View {
             } label: {
                 Label("Copy", systemImage: "doc.on.doc")
             }
+            .tint(.octetAccent)
         }
     }
 
