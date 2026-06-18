@@ -46,7 +46,7 @@ struct X509HardeningTests {
             _ = X509Certificate.parse(der: Array(full.prefix(length)))
         }
         // The complete cert still parses correctly after the hardening pass.
-        #expect(X509Certificate.parse(der: full)?.subjectCN == "lantern.example")
+        #expect(X509Certificate.parse(der: full)?.subjectCN == "octet.example")
     }
 
     @Test func byteFlipsNeverCrash() throws {

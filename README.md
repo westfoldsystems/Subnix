@@ -1,7 +1,11 @@
-# Lantern
+# Octet
 
 A local-only network toolkit for iOS 17+ and macOS 14+ (native, multiplatform
 SwiftUI, Swift 6 language mode).
+
+> Note: the Xcode target/module/scheme is still named `Lantern` pending a
+> separate module-rename step, so the `xcodebuild -scheme Lantern …` commands
+> below remain accurate until that lands.
 
 **Privacy is the product.** No analytics, no third-party SDKs, no dependencies.
 Tools are either fully on-device or contact only the host you explicitly type.

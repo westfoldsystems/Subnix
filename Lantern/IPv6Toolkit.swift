@@ -3,7 +3,7 @@
 //  Pure, offline IPv6 address math. No UI, no I/O — fully unit-testable.
 //
 //  The address is held as two UInt64 (high/low) rather than UInt128 on purpose:
-//  UInt128 only exists from iOS 18 / macOS 15, and Lantern's floor is iOS 17 /
+//  UInt128 only exists from iOS 18 / macOS 15, and Octet's floor is iOS 17 /
 //  macOS 14. Two 64-bit halves cover every operation we need with no
 //  availability gymnastics.
 //

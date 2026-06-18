@@ -1,6 +1,6 @@
 //
-//  LanternApp.swift
-//  Lantern
+//  OctetApp.swift
+//  Octet
 //
 //  Created by jeremy mills on 6/16/26.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct LanternApp: App {
+struct OctetApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()

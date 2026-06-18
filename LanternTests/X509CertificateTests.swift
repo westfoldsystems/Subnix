@@ -22,9 +22,9 @@ struct X509CertificateTests {
 
     @Test func parsesSubjectIssuerSerialAndSigAlg() throws {
         let cert = try #require(X509Certificate.parse(der: loadFixture()))
-        #expect(cert.subjectCN == "lantern.example")
-        #expect(cert.issuerCN == "lantern.example")        // self-signed
-        #expect(cert.serialHex == "AB0DAE30F86AAE4F")      // matches `openssl -serial`
+        #expect(cert.subjectCN == "octet.example")
+        #expect(cert.issuerCN == "octet.example")          // self-signed
+        #expect(cert.serialHex == "C3A355A4ECB5220F")      // matches `openssl -serial`
         #expect(cert.signatureAlgorithm == "sha256WithRSAEncryption")
     }
 

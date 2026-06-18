@@ -21,7 +21,7 @@ struct RootView: View {
                     }
                 }
             }
-            .navigationTitle("Lantern")
+            .navigationTitle("Octet")
             #if os(macOS)
             .frame(minWidth: 230)
             #endif
@@ -36,7 +36,7 @@ struct RootView: View {
             } else {
                 ContentUnavailableView(
                     "Select a tool",
-                    systemImage: "lightbulb.min",
+                    systemImage: "square.grid.2x2",
                     description: Text("Everything runs on-device. No account, no telemetry, nothing leaves this device.")
                 )
             }

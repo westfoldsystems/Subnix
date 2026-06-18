@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- Bonjour service types Lantern is allowed to browse. This MUST stay in
+	<!-- Bonjour service types Octet is allowed to browse. This MUST stay in
 	     sync with BonjourScanner.defaultServiceTypes — iOS (and macOS 15+)
 	     return nothing for any type not declared here. Array-typed, so it lives
 	     in this partial plist rather than an INFOPLIST_KEY build setting; the

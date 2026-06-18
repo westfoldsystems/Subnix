@@ -191,7 +191,7 @@ final class PingEngine {
             UInt8(identifier >> 8), UInt8(identifier & 0xFF),
             UInt8(sequence >> 8), UInt8(sequence & 0xFF),
         ]
-        pkt += Array("lantern-echo-pkt".utf8.prefix(16))   // 16-byte payload
+        pkt += Array("octet-echo-pkt-x".utf8.prefix(16))   // 16-byte payload
         if !isV6 {
             let ck = checksum(pkt)
             pkt[2] = UInt8(ck >> 8)

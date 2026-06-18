@@ -347,7 +347,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Lantern/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Lantern discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Lantern contacts no servers.";
+				INFOPLIST_KEY_CFBundleDisplayName = Octet;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Octet discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Octet contacts no servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -383,7 +384,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Lantern/Info.plist;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Lantern discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Lantern contacts no servers.";
+				INFOPLIST_KEY_CFBundleDisplayName = Octet;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Octet discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Octet contacts no servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

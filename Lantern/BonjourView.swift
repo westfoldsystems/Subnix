@@ -38,7 +38,7 @@ struct BonjourView: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            Text("Discovery stays on this network. Lantern contacts no servers.")
+            Text("Discovery stays on this network. Octet contacts no servers.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity)

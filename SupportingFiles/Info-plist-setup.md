@@ -1,6 +1,6 @@
 # Info.plist, entitlements & bundled-data setup
 
-Lantern is local-only. This file is the single place that records every
+Octet is local-only. This file is the single place that records every
 platform declaration the app needs and every byte of data or endpoint it
 touches, so the privacy posture stays auditable.
 

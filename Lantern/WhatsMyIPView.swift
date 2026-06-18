@@ -27,7 +27,7 @@ struct WhatsMyIPView: View {
             } header: {
                 Text("Public address")
             } footer: {
-                Text("Tapping a reveal contacts an external provider (Cloudflare, falling back to ipify) — the only outside connection Lantern makes. IPv4 and IPv6 are independent; nothing is fetched until you tap.")
+                Text("Tapping a reveal contacts an external provider (Cloudflare, falling back to ipify) — the only outside connection Octet makes. IPv4 and IPv6 are independent; nothing is fetched until you tap.")
             }
         }
         .formStyle(.grouped)
