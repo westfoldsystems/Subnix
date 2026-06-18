@@ -26,9 +26,10 @@ struct SubnetView: View {
                 if let errorText {
                     Label(errorText, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 }
             }
+            .listRowBackground(Color.octetSurface)
 
             if let r = result {
                 Section("Network") {
@@ -38,6 +39,7 @@ struct SubnetView: View {
                     ResultRow("Subnet mask", r.subnetMask)
                     ResultRow("Wildcard", r.wildcardMask)
                 }
+                .listRowBackground(Color.octetSurface)
 
                 Section("Hosts") {
                     if let f = r.firstUsableHost { ResultRow("First usable", f) }
@@ -45,14 +47,18 @@ struct SubnetView: View {
                     ResultRow("Usable hosts", r.usableHostCount.formatted())
                     ResultRow("Total addresses", r.totalAddresses.formatted())
                 }
+                .listRowBackground(Color.octetSurface)
 
                 Section("Info") {
                     ResultRow("Legacy class", r.addressClass)
                     ResultRow("Private (RFC 1918)", r.isPrivate ? "Yes" : "No")
                 }
+                .listRowBackground(Color.octetSurface)
             }
         }
         .formStyle(.grouped)
+        .scrollContentBackground(.hidden)
+        .background(.octetPaper)
         .onAppear(perform: calculate)
     }
 

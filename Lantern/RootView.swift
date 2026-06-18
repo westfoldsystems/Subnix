@@ -50,6 +50,8 @@ struct RootView: View {
         // Apply the chosen appearance to the whole window; .system passes nil
         // (defers to the OS).
         .preferredColorScheme(appearance.colorScheme)
+        // Brand accent (honey) for controls, selection, buttons app-wide.
+        .tint(.octetAccent)
     }
 
     private var appearanceMenu: some ToolbarContent {
