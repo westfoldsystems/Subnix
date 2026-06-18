@@ -13,7 +13,7 @@ struct WhatsMyIPView: View {
         Form {
             Section("Local interfaces") {
                 if model.interfaces.isEmpty {
-                    Text("No active interfaces found.").foregroundStyle(.secondary)
+                    Text("No active interfaces found.").foregroundStyle(.octetMuted)
                 } else {
                     ForEach(model.interfaces) { iface in
                         ResultRow(label(for: iface), iface.address)
@@ -31,6 +31,7 @@ struct WhatsMyIPView: View {
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .onAppear { model.loadInterfaces() }
     }
 
@@ -48,20 +49,20 @@ struct WhatsMyIPView: View {
         case .loading:
             HStack(spacing: 12) {
                 ProgressView()
-                Text("Contacting provider…").foregroundStyle(.secondary)
+                Text("Contacting provider…").foregroundStyle(.octetMuted)
             }
         case .value(let ip, let provider):
             VStack(alignment: .leading, spacing: 4) {
                 ResultRow("Public \(family.rawValue)", ip)
                 Text("via \(provider)")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.octetMuted)
             }
         case .failed(let message):
             VStack(alignment: .leading, spacing: 6) {
                 Label(message, systemImage: "exclamationmark.triangle")
                     .font(.callout)
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.statusTimeout)
                 Button("Try again") { model.revealPublic(family) }
                     .font(.callout)
             }

@@ -31,7 +31,7 @@ struct IPv6View: View {
                 if let addressError {
                     Label(addressError, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 }
             }
 
@@ -64,7 +64,7 @@ struct IPv6View: View {
                 if let macError {
                     Label(macError, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 } else if let eui64 {
                     ResultRow("Interface ID", eui64.interfaceID)
                     ResultRow("Link-local", eui64.linkLocal)
@@ -72,6 +72,7 @@ struct IPv6View: View {
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .onChange(of: address) { _, _ in recomputeAddress() }
         .onChange(of: prefix) { _, _ in recomputeAddress() }
         .onChange(of: mac) { _, _ in recomputeMAC() }

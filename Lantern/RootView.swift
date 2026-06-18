@@ -26,6 +26,7 @@ struct RootView: View {
                     }
                 }
             }
+            .octetPaperBackground()
             .navigationTitle("Octet")
             .toolbar { appearanceMenu }
             #if os(macOS)
@@ -45,6 +46,8 @@ struct RootView: View {
                     systemImage: "square.grid.2x2",
                     description: Text("Everything runs on-device. No account, no telemetry, nothing leaves this device.")
                 )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.octetPaper)
             }
         }
         // Apply the chosen appearance to the whole window; .system passes nil

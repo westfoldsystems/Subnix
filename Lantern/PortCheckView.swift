@@ -48,13 +48,13 @@ struct PortCheckView: View {
                 } else {
                     Text("\(PortList.common.count) common ports (web, mail, SSH, DB, RDP…)")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.octetMuted)
                 }
 
                 if let parseError {
                     Label(parseError, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 }
             }
 
@@ -67,6 +67,7 @@ struct PortCheckView: View {
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if scanner.isScanning {
@@ -80,7 +81,7 @@ struct PortCheckView: View {
         .safeAreaInset(edge: .bottom) {
             Text("Connect-scan to the host you typed only. Nothing else is contacted.")
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity)
                 .padding(8)
                 .background(.bar)

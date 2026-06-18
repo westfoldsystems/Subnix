@@ -29,7 +29,7 @@ struct PingView: View {
             case .failed(let message):
                 Section {
                     Label(message, systemImage: "exclamationmark.triangle")
-                        .font(.callout).foregroundStyle(.orange)
+                        .font(.callout).foregroundStyle(.statusTimeout)
                 }
             case .idle:
                 EmptyView()
@@ -55,6 +55,7 @@ struct PingView: View {
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if engine.isPinging {
@@ -67,7 +68,7 @@ struct PingView: View {
         }
         .safeAreaInset(edge: .bottom) {
             Text("Sends ICMP echo to the host you type. ICMP availability depends on the platform/sandbox.")
-                .font(.caption2).foregroundStyle(.secondary)
+                .font(.caption2).foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity).padding(8).background(.bar)
         }
     }

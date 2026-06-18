@@ -38,20 +38,21 @@ struct TLSCertificateView: View {
                 Section {
                     HStack(spacing: 12) {
                         ProgressView()
-                        Text("Handshaking…").foregroundStyle(.secondary)
+                        Text("Handshaking…").foregroundStyle(.octetMuted)
                     }
                 }
             case .failed(let message):
                 Section {
                     Label(message, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 }
             case .done(let report):
                 reportSections(report)
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if inspector.isLoading {
@@ -65,7 +66,7 @@ struct TLSCertificateView: View {
         .safeAreaInset(edge: .bottom) {
             Text("Connects only to the host you enter, and only to read its certificate.")
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity)
                 .padding(8)
                 .background(.bar)
@@ -92,7 +93,7 @@ struct TLSCertificateView: View {
 
             Section("Subject Alternative Names (\(leaf.sans.count))") {
                 if leaf.sans.isEmpty {
-                    Text("None present").foregroundStyle(.secondary)
+                    Text("None present").foregroundStyle(.octetMuted)
                 } else {
                     ForEach(leaf.sans, id: \.self) { san in
                         ResultRow(san.kind.rawValue, san.value)
@@ -109,7 +110,7 @@ struct TLSCertificateView: View {
                             .font(.callout)
                         Text("issued by \(cert.issuerCN ?? "—")")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.octetMuted)
                     }
                     .textSelection(.enabled)
                 }

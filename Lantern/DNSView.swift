@@ -47,18 +47,19 @@ struct DNSView: View {
                 EmptyView()
             case .querying:
                 Section {
-                    HStack(spacing: 12) { ProgressView(); Text("Querying…").foregroundStyle(.secondary) }
+                    HStack(spacing: 12) { ProgressView(); Text("Querying…").foregroundStyle(.octetMuted) }
                 }
             case .failed(let message):
                 Section {
                     Label(message, systemImage: "exclamationmark.triangle")
-                        .font(.callout).foregroundStyle(.orange)
+                        .font(.callout).foregroundStyle(.statusTimeout)
                 }
             case .done(let response, let viaTCP):
                 resultSections(response, viaTCP: viaTCP)
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if client.isQuerying {
@@ -71,7 +72,7 @@ struct DNSView: View {
         }
         .safeAreaInset(edge: .bottom) {
             Text("Queries only the resolver you select.")
-                .font(.caption2).foregroundStyle(.secondary)
+                .font(.caption2).foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity).padding(8).background(.bar)
         }
     }
@@ -95,7 +96,7 @@ struct DNSView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         ResultRow("\(record.typeLabel)  \(record.name)", record.data)
                         Text("TTL \(record.ttl)s")
-                            .font(.caption2).foregroundStyle(.secondary)
+                            .font(.caption2).foregroundStyle(.octetMuted)
                     }
                 }
             }

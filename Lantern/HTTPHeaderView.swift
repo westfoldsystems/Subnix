@@ -30,20 +30,21 @@ struct HTTPHeaderView: View {
                 Section {
                     HStack(spacing: 12) {
                         ProgressView()
-                        Text("Requesting…").foregroundStyle(.secondary)
+                        Text("Requesting…").foregroundStyle(.octetMuted)
                     }
                 }
             case .failed(let message):
                 Section {
                     Label(message, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 }
             case .done(let report):
                 reportSections(report)
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if inspector.isLoading {
@@ -57,7 +58,7 @@ struct HTTPHeaderView: View {
         .safeAreaInset(edge: .bottom) {
             Text("Contacts only the URL you enter and the hosts it redirects to.")
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity)
                 .padding(8)
                 .background(.bar)
@@ -74,11 +75,11 @@ struct HTTPHeaderView: View {
                             .font(.system(.callout, design: .monospaced))
                         Text(hop.url)
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.octetMuted)
                         if let location = hop.location {
                             Text("→ \(location)")
                                 .font(.caption)
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(.octetAccent)
                         }
                     }
                     .textSelection(.enabled)

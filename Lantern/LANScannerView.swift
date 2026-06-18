@@ -20,10 +20,10 @@ struct LANScannerView: View {
                     ResultRow("Swept", "\(done)/\(total)")
                 } else if case .enriching = scanner.state {
                     Label("Reading ARP & resolving names…", systemImage: "ellipsis")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.octetMuted)
                 } else if case .failed(let message) = scanner.state {
                     Label(message, systemImage: "exclamationmark.triangle")
-                        .font(.callout).foregroundStyle(.orange)
+                        .font(.callout).foregroundStyle(.statusTimeout)
                 }
             } header: {
                 Text("Scan")
@@ -36,15 +36,16 @@ struct LANScannerView: View {
                     ForEach(scanner.hosts) { host in
                         VStack(alignment: .leading, spacing: 2) {
                             ResultRow(host.hostname ?? host.ip, host.mac ?? "—")
-                            if host.hostname != nil { Text(host.ip).font(.caption2).foregroundStyle(.secondary) }
+                            if host.hostname != nil { Text(host.ip).font(.caption2).foregroundStyle(.octetMuted) }
                             if let vendor = host.vendor {
-                                Text(vendor).font(.caption2).foregroundStyle(.secondary)
+                                Text(vendor).font(.caption2).foregroundStyle(.octetMuted)
                             }
                         }
                     }
                 }
             }
         }
+        .octetScreen()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if scanner.isScanning {
@@ -56,7 +57,7 @@ struct LANScannerView: View {
         }
         .safeAreaInset(edge: .bottom) {
             Text("Scans only your local subnet, fully on-device.")
-                .font(.caption2).foregroundStyle(.secondary)
+                .font(.caption2).foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity).padding(8).background(.bar)
         }
     }

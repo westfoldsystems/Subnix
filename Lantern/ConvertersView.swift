@@ -38,7 +38,7 @@ struct ConvertersView: View {
                 if let ipv4Error {
                     Label(ipv4Error, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 } else if let forms = ipv4Forms {
                     ResultRow("Dotted", forms.dotted)
                     ResultRow("Hex", forms.hex)
@@ -58,7 +58,7 @@ struct ConvertersView: View {
                 if let macError {
                     Label(macError, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 } else if let mac {
                     ResultRow("Colon", mac.colon)
                     ResultRow("Hyphen", mac.hyphen)
@@ -69,6 +69,7 @@ struct ConvertersView: View {
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .onChange(of: ipv4Input) { _, newInput in convertIPv4(newInput, as: ipv4Format) }
         .onChange(of: ipv4Format) { _, newFormat in reformatIPv4(to: newFormat) }
         .onChange(of: macInput) { _, _ in convertMAC() }

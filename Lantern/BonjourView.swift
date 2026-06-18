@@ -20,7 +20,7 @@ struct BonjourView: View {
                                 Text(svc.name)
                                 Text(svc.domain)
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(.octetMuted)
                             }
                             .textSelection(.enabled)
                         }
@@ -28,6 +28,7 @@ struct BonjourView: View {
                 }
             }
         }
+        .octetScreen()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if scanner.state == .scanning {
@@ -40,7 +41,7 @@ struct BonjourView: View {
         .safeAreaInset(edge: .bottom) {
             Text("Discovery stays on this network. Octet contacts no servers.")
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity)
                 .padding(8)
                 .background(.bar)
@@ -55,11 +56,11 @@ struct BonjourView: View {
         case .scanning:
             HStack(spacing: 12) {
                 ProgressView()
-                Text("Listening for services…").foregroundStyle(.secondary)
+                Text("Listening for services…").foregroundStyle(.octetMuted)
             }
         case .failed(let message):
             Label(message, systemImage: "exclamationmark.triangle")
-                .foregroundStyle(.orange)
+                .foregroundStyle(.statusTimeout)
         default:
             ContentUnavailableView(
                 "No services yet",

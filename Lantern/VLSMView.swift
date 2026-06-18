@@ -55,7 +55,7 @@ struct VLSMView: View {
                 Section {
                     Label(errorText, systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 }
             }
 
@@ -85,6 +85,7 @@ struct VLSMView: View {
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .onChange(of: baseCIDR) { _, _ in recompute() }
         .onChange(of: requirements) { _, _ in recompute() }
         .onAppear(perform: recompute)

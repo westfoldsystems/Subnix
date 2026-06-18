@@ -31,7 +31,7 @@ struct OUIView: View {
                             Text("No OUI database bundled")
                             Text("Vendor lookup needs the IEEE MA-L registry bundled as oui-mal.tsv. See SupportingFiles/Info-plist-setup.md.")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.octetMuted)
                         }
                     } icon: {
                         Image(systemName: "tray")
@@ -51,15 +51,16 @@ struct OUIView: View {
                 Section {
                     Label("Enter a valid 48-bit MAC address.", systemImage: "exclamationmark.triangle")
                         .font(.callout)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.statusTimeout)
                 }
             }
         }
         .formStyle(.grouped)
+        .octetScreen()
         .safeAreaInset(edge: .bottom) {
             Text("Lookup is fully offline — no IEEE API is contacted.")
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity)
                 .padding(8)
                 .background(.bar)
