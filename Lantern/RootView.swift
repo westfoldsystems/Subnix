@@ -29,6 +29,20 @@ struct RootView: View {
             .octetPaperBackground()
             .navigationTitle("Octet")
             .toolbar { appearanceMenu }
+            #if os(iOS)
+            // Brand lockup: "Octet" with the mark to its right, in the title bar.
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 6) {
+                        Text("Octet")
+                            .font(.headline)
+                            .foregroundStyle(.octetInk)
+                        OctetMark(size: 20)
+                    }
+                }
+            }
+            #endif
             #if os(macOS)
             .frame(minWidth: 230)
             #endif
