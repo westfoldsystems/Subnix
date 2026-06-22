@@ -41,11 +41,15 @@ struct RootView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     #endif
             } else {
-                ContentUnavailableView(
-                    "Select a tool",
-                    systemImage: "square.grid.2x2",
-                    description: Text("Everything runs on-device. No account, no telemetry, nothing leaves this device.")
-                )
+                ContentUnavailableView {
+                    Label {
+                        Text("Select a tool")
+                    } icon: {
+                        OctetMark(size: 44)
+                    }
+                } description: {
+                    Text("Everything runs on-device. No account, no telemetry, nothing leaves this device.")
+                }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.octetPaper)
             }
