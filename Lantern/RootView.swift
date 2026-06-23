@@ -34,11 +34,11 @@ struct RootView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    HStack(spacing: 6) {
+                    HStack(spacing: 8) {
                         Text("Octet")
-                            .font(.headline)
+                            .font(.title3.weight(.semibold))
                             .foregroundStyle(.octetInk)
-                        OctetMark(size: 20)
+                        OctetMark(size: 26)
                     }
                 }
             }
