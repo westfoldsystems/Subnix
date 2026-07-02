@@ -9,6 +9,12 @@ import SwiftUI
 struct LANScannerView: View {
     @State private var scanner = LANScanner()
 
+    /// Sub-millisecond LAN RTTs round to 0 — show them as "<1 ms".
+    static func latencyLabel(_ seconds: TimeInterval) -> String {
+        let ms = seconds * 1000
+        return ms < 1 ? "<1 ms" : String(format: "%.0f ms", ms)
+    }
+
     var body: some View {
         List {
             Section {
@@ -39,14 +45,22 @@ struct LANScannerView: View {
                             Circle().fill(.statusOnline).frame(width: 8, height: 8).padding(.top, 6)
                             VStack(alignment: .leading, spacing: 2) {
                                 ResultRow(host.hostname ?? host.ip, host.mac ?? "—")
-                                if host.ip == scanner.selfIP {
-                                    Text("This device").font(.caption2).foregroundStyle(.octetAccent)
+                                if host.ip == scanner.selfIP || host.isGateway {
+                                    HStack(spacing: 6) {
+                                        if host.ip == scanner.selfIP { Text("This device") }
+                                        if host.isGateway { Text("Gateway") }
+                                    }
+                                    .font(.caption2).foregroundStyle(.octetAccent)
                                 }
                                 if host.hostname != nil {
                                     Text(host.ip).font(.caption2).foregroundStyle(.octetMuted)
                                 }
                                 if let hint = host.deviceHint {
                                     Text(hint).font(.caption2).foregroundStyle(.octetMuted)
+                                }
+                                if let latency = host.latency {
+                                    Text(LANScannerView.latencyLabel(latency))
+                                        .font(.caption2).foregroundStyle(.octetMuted)
                                 }
                                 if !host.openPorts.isEmpty {
                                     Text("open: " + host.openPorts.map { PortList.serviceName(for: $0) ?? String($0) }.joined(separator: ", "))

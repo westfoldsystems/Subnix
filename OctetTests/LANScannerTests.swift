@@ -34,6 +34,13 @@ struct LANScannerTests {
         #expect(!LANScanner.ipLess("192.168.1.10", "192.168.1.2"))
     }
 
+    @Test func assumedGatewayIsDotOne() {
+        #expect(LANScanner.assumedGateway(subnet: "192.168.0.0/24") == "192.168.0.1")
+        #expect(LANScanner.assumedGateway(subnet: "10.0.5.0/24") == "10.0.5.1")
+        #expect(LANScanner.assumedGateway(subnet: nil) == nil)
+        #expect(LANScanner.assumedGateway(subnet: "not-a-subnet") == nil)
+    }
+
     @Test func deviceHintFromOpenPorts() {
         // Most-specific match wins.
         #expect(LANScanner.deviceHint(openPorts: [62078, 443]) == "iPhone / iPad")

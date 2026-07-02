@@ -26,6 +26,8 @@ struct LANHost: Identifiable, Sendable {
     var vendor: String?
     var hostname: String?
     var openPorts: [Int] = []            // TCP ports that answered during the sweep
+    var isGateway = false                // this host is the default route (router)
+    var latency: TimeInterval?           // fastest TCP-connect RTT, seconds
 
     /// Best-guess device type from the open-port fingerprint.
     var deviceHint: String? { LANScanner.deviceHint(openPorts: openPorts) }
@@ -47,6 +49,7 @@ final class LANScanner {
     private(set) var state: State = .idle
     private(set) var subnet: String?
     private(set) var selfIP: String?     // this device's own address on the subnet
+    private(set) var gatewayIP: String?  // default-route router (read on macOS, guessed on iOS)
 
     private var task: Task<Void, Never>?
     // Curated high-signal TCP ports: liveness + a service/device fingerprint.
@@ -86,7 +89,7 @@ final class LANScanner {
         var done = 0
 
         // Sweep: bounded TCP-connect probes, streaming live hosts with open ports.
-        await withTaskGroup(of: (ip: String, alive: Bool, open: [Int]).self) { group in
+        await withTaskGroup(of: (ip: String, alive: Bool, open: [Int], latency: TimeInterval?).self) { group in
             var iterator = candidates.makeIterator()
             let cap = 24
             for _ in 0..<cap {
@@ -96,7 +99,7 @@ final class LANScanner {
             while let result = await group.next() {
                 if Task.isCancelled { group.cancelAll(); break }
                 done += 1
-                if result.alive { insertHost(result.ip, openPorts: result.open) }
+                if result.alive { insertHost(result.ip, openPorts: result.open, latency: result.latency) }
                 state = .scanning(done: done, total: total)
                 if let ip = iterator.next() {
                     group.addTask { [probePorts] in await Self.probeHost(ip, ports: probePorts) }
@@ -112,8 +115,18 @@ final class LANScanner {
         for (ip, _) in arp where Self.inSameSlash24(ip, as: subnet) {
             insertHost(ip)
         }
+
+        // Flag the default-route gateway (real read on macOS, .1 guess on iOS).
+        let gateway = DefaultRoute.gatewayIPv4() ?? Self.assumedGateway(subnet: subnet)
+        gatewayIP = gateway
+        if let gateway, !hosts.contains(where: { $0.ip == gateway }),
+           Self.inSameSlash24(gateway, as: subnet) {
+            insertHost(gateway)
+        }
+
         for index in hosts.indices {
             let ip = hosts[index].ip
+            if ip == gateway { hosts[index].isGateway = true }
             if let mac = arp[ip] {
                 hosts[index].mac = mac
                 if let parsed = try? MACAddress.parse(mac) {
@@ -126,31 +139,38 @@ final class LANScanner {
         state = .finished
     }
 
-    private func insertHost(_ ip: String, openPorts: [Int] = []) {
+    private func insertHost(_ ip: String, openPorts: [Int] = [], latency: TimeInterval? = nil) {
         guard !hosts.contains(where: { $0.ip == ip }) else { return }
         let index = hosts.firstIndex { Self.ipLess(ip, $0.ip) } ?? hosts.endIndex
-        hosts.insert(LANHost(ip: ip, openPorts: openPorts), at: index)
+        hosts.insert(LANHost(ip: ip, openPorts: openPorts, latency: latency), at: index)
     }
 
     // MARK: - Probing (isolation-free)
 
     /// Connect-probe every port. `alive` = the host answered anything (open OR
-    /// refused → it's up and ARP resolved); `open` = ports that accepted.
-    nonisolated static func probeHost(_ ip: String, ports: [Int]) async -> (ip: String, alive: Bool, open: [Int]) {
-        await withTaskGroup(of: (port: Int, status: PortStatus).self) { group in
+    /// refused → it's up and ARP resolved); `open` = ports that accepted;
+    /// `latency` = fastest connect RTT among open ports (nil if none opened).
+    nonisolated static func probeHost(_ ip: String, ports: [Int]) async -> (ip: String, alive: Bool, open: [Int], latency: TimeInterval?) {
+        await withTaskGroup(of: PortProbeResult.self) { group in
             for port in ports {
-                group.addTask { (port, await PortScanner.probe(host: ip, port: port, timeout: 1).status) }
+                group.addTask { await PortScanner.probe(host: ip, port: port, timeout: 1) }
             }
             var alive = false
             var open: [Int] = []
+            var latency: TimeInterval?
             for await result in group {
                 switch result.status {
-                case .open:   alive = true; open.append(result.port)
-                case .closed: alive = true
-                default:      break
+                case .open:
+                    alive = true
+                    open.append(result.port)
+                    if let l = result.latency { latency = min(latency ?? l, l) }
+                case .closed:
+                    alive = true
+                default:
+                    break
                 }
             }
-            return (ip, alive, open.sorted())
+            return (ip, alive, open.sorted(), latency)
         }
     }
 
@@ -202,6 +222,15 @@ final class LANScanner {
         guard octets.count == 4, octets.allSatisfy({ UInt8($0) != nil }) else { return nil }
         let prefix = octets.prefix(3).joined(separator: ".")
         return ("\(prefix).0/24", (1...254).map { "\(prefix).\($0)" })
+    }
+
+    /// The conventional gateway for a /24 (`<prefix>.1`). Used as a best-effort
+    /// fallback where the real default route can't be read (iOS). Pure.
+    nonisolated static func assumedGateway(subnet: String?) -> String? {
+        guard let subnet, let network = subnet.split(separator: "/").first else { return nil }
+        let octets = network.split(separator: ".")
+        guard octets.count == 4 else { return nil }
+        return "\(octets[0]).\(octets[1]).\(octets[2]).1"
     }
 
     nonisolated static func inSameSlash24(_ ip: String, as subnet: String?) -> Bool {
