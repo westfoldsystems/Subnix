@@ -114,7 +114,7 @@ final class DNSClient {
                         port: UInt16 = 53, timeout: TimeInterval = 5) async throws -> [UInt8] {
         let connection = NWConnection(host: NWEndpoint.Host(server),
                                       port: NWEndpoint.Port(rawValue: port)!, using: .udp)
-        let queue = DispatchQueue(label: "systems.westfold.octet.dns.udp")
+        let queue = DispatchQueue(label: "app.octet.dns.udp")
         let resumed = OSAllocatedUnfairLock(initialState: false)
 
         return try await withCheckedThrowingContinuation { (cont: CheckedContinuation<[UInt8], Error>) in
@@ -152,7 +152,7 @@ final class DNSClient {
         let framed = [UInt8(query.count >> 8), UInt8(query.count & 0xFF)] + query
         let connection = NWConnection(host: NWEndpoint.Host(server),
                                       port: NWEndpoint.Port(rawValue: port)!, using: .tcp)
-        let queue = DispatchQueue(label: "systems.westfold.octet.dns.tcp")
+        let queue = DispatchQueue(label: "app.octet.dns.tcp")
         let resumed = OSAllocatedUnfairLock(initialState: false)
         let buffer = OSAllocatedUnfairLock(initialState: [UInt8]())
 

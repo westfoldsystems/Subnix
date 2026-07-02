@@ -126,7 +126,7 @@ final class PortScanner {
         }
 
         let connection = NWConnection(host: NWEndpoint.Host(host), port: nwPort, using: .tcp)
-        let queue = DispatchQueue(label: "systems.westfold.octet.portscan.\(port)")
+        let queue = DispatchQueue(label: "app.octet.portscan.\(port)")
         let start = DispatchTime.now()
         // Both the state handler and the timeout run on `queue`, but the compiler
         // still needs a Sendable-safe one-shot to gate the single continuation resume.

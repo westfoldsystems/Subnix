@@ -139,7 +139,7 @@ final class TLSInspector {
                                            timeout: TimeInterval) async throws -> [[UInt8]] {
         guard let nwPort = NWEndpoint.Port(rawValue: port) else { throw TLSInspectorError.invalidHost }
 
-        let queue = DispatchQueue(label: "systems.westfold.octet.tls")
+        let queue = DispatchQueue(label: "app.octet.tls")
         // The verify block stashes the presented chain here; the state handler
         // reads it once the handshake is ready. Both run on `queue`.
         let captured = OSAllocatedUnfairLock(initialState: [[UInt8]]())

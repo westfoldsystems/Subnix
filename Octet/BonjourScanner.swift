@@ -56,7 +56,7 @@ final class BonjourScanner {
     private(set) var state: ScanState = .idle
 
     private var browsers: [NWBrowser] = []
-    private let queue = DispatchQueue(label: "systems.westfold.octet.bonjour",
+    private let queue = DispatchQueue(label: "app.octet.bonjour",
                                       qos: .userInitiated)
 
     // MARK: - Control
