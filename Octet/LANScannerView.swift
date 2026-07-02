@@ -39,7 +39,19 @@ struct LANScannerView: View {
                             Circle().fill(.statusOnline).frame(width: 8, height: 8).padding(.top, 6)
                             VStack(alignment: .leading, spacing: 2) {
                                 ResultRow(host.hostname ?? host.ip, host.mac ?? "—")
-                                if host.hostname != nil { Text(host.ip).font(.caption2).foregroundStyle(.octetMuted) }
+                                if host.ip == scanner.selfIP {
+                                    Text("This device").font(.caption2).foregroundStyle(.octetAccent)
+                                }
+                                if host.hostname != nil {
+                                    Text(host.ip).font(.caption2).foregroundStyle(.octetMuted)
+                                }
+                                if let hint = host.deviceHint {
+                                    Text(hint).font(.caption2).foregroundStyle(.octetMuted)
+                                }
+                                if !host.openPorts.isEmpty {
+                                    Text("open: " + host.openPorts.map { PortList.serviceName(for: $0) ?? String($0) }.joined(separator: ", "))
+                                        .font(.caption2).foregroundStyle(.octetMuted)
+                                }
                                 if let vendor = host.vendor {
                                     Text(vendor).font(.caption2).foregroundStyle(.octetMuted)
                                 }

@@ -33,4 +33,17 @@ struct LANScannerTests {
         #expect(LANScanner.ipLess("192.168.1.2", "192.168.1.10"))
         #expect(!LANScanner.ipLess("192.168.1.10", "192.168.1.2"))
     }
+
+    @Test func deviceHintFromOpenPorts() {
+        // Most-specific match wins.
+        #expect(LANScanner.deviceHint(openPorts: [62078, 443]) == "iPhone / iPad")
+        #expect(LANScanner.deviceHint(openPorts: [32400, 80]) == "Plex media server")
+        #expect(LANScanner.deviceHint(openPorts: [9100]) == "Printer")
+        #expect(LANScanner.deviceHint(openPorts: [445, 139]) == "Windows / NAS (SMB)")
+        #expect(LANScanner.deviceHint(openPorts: [3389]) == "Windows (RDP)")
+        #expect(LANScanner.deviceHint(openPorts: [22]) == "Linux / Unix (SSH)")
+        #expect(LANScanner.deviceHint(openPorts: [80, 443]) == "Web server / router")
+        #expect(LANScanner.deviceHint(openPorts: []) == nil)
+        #expect(LANScanner.deviceHint(openPorts: [12345]) == nil)   // no signal
+    }
 }

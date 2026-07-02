@@ -25,6 +25,10 @@ struct LANHost: Identifiable, Sendable {
     var mac: String?
     var vendor: String?
     var hostname: String?
+    var openPorts: [Int] = []            // TCP ports that answered during the sweep
+
+    /// Best-guess device type from the open-port fingerprint.
+    var deviceHint: String? { LANScanner.deviceHint(openPorts: openPorts) }
 }
 
 @MainActor
@@ -42,9 +46,11 @@ final class LANScanner {
     private(set) var hosts: [LANHost] = []
     private(set) var state: State = .idle
     private(set) var subnet: String?
+    private(set) var selfIP: String?     // this device's own address on the subnet
 
     private var task: Task<Void, Never>?
-    private let probePorts = [80, 443, 22, 445]
+    // Curated high-signal TCP ports: liveness + a service/device fingerprint.
+    private let probePorts = [22, 80, 443, 139, 445, 3389, 631, 9100, 8080, 62078, 8009, 32400]
 
     var isScanning: Bool {
         switch state { case .scanning, .enriching: true; default: false }
@@ -59,6 +65,7 @@ final class LANScanner {
             return
         }
         subnet = plan.network
+        selfIP = primary
         hosts = []
         state = .scanning(done: 0, total: plan.hosts.count)
 
@@ -78,21 +85,21 @@ final class LANScanner {
         let total = candidates.count
         var done = 0
 
-        // Sweep: bounded TCP-connect liveness probes, streaming live hosts.
-        await withTaskGroup(of: (ip: String, alive: Bool).self) { group in
+        // Sweep: bounded TCP-connect probes, streaming live hosts with open ports.
+        await withTaskGroup(of: (ip: String, alive: Bool, open: [Int]).self) { group in
             var iterator = candidates.makeIterator()
             let cap = 24
             for _ in 0..<cap {
                 guard let ip = iterator.next() else { break }
-                group.addTask { [probePorts] in (ip, await Self.isAlive(ip, ports: probePorts)) }
+                group.addTask { [probePorts] in await Self.probeHost(ip, ports: probePorts) }
             }
             while let result = await group.next() {
                 if Task.isCancelled { group.cancelAll(); break }
                 done += 1
-                if result.alive { insertHost(result.ip) }
+                if result.alive { insertHost(result.ip, openPorts: result.open) }
                 state = .scanning(done: done, total: total)
                 if let ip = iterator.next() {
-                    group.addTask { [probePorts] in (ip, await Self.isAlive(ip, ports: probePorts)) }
+                    group.addTask { [probePorts] in await Self.probeHost(ip, ports: probePorts) }
                 }
             }
         }
@@ -119,31 +126,46 @@ final class LANScanner {
         state = .finished
     }
 
-    private func insertHost(_ ip: String) {
+    private func insertHost(_ ip: String, openPorts: [Int] = []) {
         guard !hosts.contains(where: { $0.ip == ip }) else { return }
         let index = hosts.firstIndex { Self.ipLess(ip, $0.ip) } ?? hosts.endIndex
-        hosts.insert(LANHost(ip: ip), at: index)
+        hosts.insert(LANHost(ip: ip, openPorts: openPorts), at: index)
     }
 
-    // MARK: - Liveness (isolation-free)
+    // MARK: - Probing (isolation-free)
 
-    nonisolated static func isAlive(_ ip: String, ports: [Int]) async -> Bool {
-        await withTaskGroup(of: Bool.self) { group in
+    /// Connect-probe every port. `alive` = the host answered anything (open OR
+    /// refused → it's up and ARP resolved); `open` = ports that accepted.
+    nonisolated static func probeHost(_ ip: String, ports: [Int]) async -> (ip: String, alive: Bool, open: [Int]) {
+        await withTaskGroup(of: (port: Int, status: PortStatus).self) { group in
             for port in ports {
-                group.addTask {
-                    // Any answer (open OR refused) means the host is up and ARP resolved.
-                    switch await PortScanner.probe(host: ip, port: port, timeout: 1).status {
-                    case .open, .closed: return true
-                    default: return false
-                    }
+                group.addTask { (port, await PortScanner.probe(host: ip, port: port, timeout: 1).status) }
+            }
+            var alive = false
+            var open: [Int] = []
+            for await result in group {
+                switch result.status {
+                case .open:   alive = true; open.append(result.port)
+                case .closed: alive = true
+                default:      break
                 }
             }
-            for await alive in group where alive {
-                group.cancelAll()
-                return true
-            }
-            return false
+            return (ip, alive, open.sorted())
         }
+    }
+
+    /// Best-guess device type from open ports. Most specific match wins. Pure.
+    nonisolated static func deviceHint(openPorts: [Int]) -> String? {
+        let p = Set(openPorts)
+        if p.contains(62078)                 { return "iPhone / iPad" }
+        if p.contains(32400)                 { return "Plex media server" }
+        if p.contains(8009)                  { return "Chromecast / Google TV" }
+        if p.contains(9100) || p.contains(631) { return "Printer" }
+        if p.contains(3389)                  { return "Windows (RDP)" }
+        if p.contains(445) || p.contains(139) { return "Windows / NAS (SMB)" }
+        if p.contains(22)                    { return "Linux / Unix (SSH)" }
+        if p.contains(443) || p.contains(80) || p.contains(8080) { return "Web server / router" }
+        return nil
     }
 
     nonisolated static func reverseDNS(_ ip: String) async -> String? {

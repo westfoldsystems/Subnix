@@ -23,6 +23,8 @@ enum PortList {
         587: "submission", 993: "imaps", 995: "pop3s", 1433: "mssql",
         3306: "mysql", 3389: "rdp", 5432: "postgres", 5900: "vnc",
         6379: "redis", 8080: "http-alt", 8443: "https-alt",
+        139: "netbios", 631: "ipp", 9100: "jetdirect", 62078: "lockdown",
+        8009: "cast", 32400: "plex",
     ]
 
     static func serviceName(for port: Int) -> String? { serviceNames[port] }
