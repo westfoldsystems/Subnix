@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode — build output
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Xcode — user-specific state (schemes/breakpoints/window state)
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Xcode — legacy per-user project cruft
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Provisioning / signing secrets — never commit
+*.mobileprovision
+*.p12
+*.cer
+*.certSigningRequest
+
+# Python (render_icon.py tooling)
+__pycache__/
+*.pyc
+# render_icon.py default-run previews (only the vendored sources are tracked)
+Octet-Brand/Octet-preview-*.png
