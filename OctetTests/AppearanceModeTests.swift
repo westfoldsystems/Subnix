@@ -5,7 +5,7 @@
 
 import Testing
 import SwiftUI
-@testable import Lantern
+@testable import Octet
 
 struct AppearanceModeTests {
 

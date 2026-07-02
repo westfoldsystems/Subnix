@@ -7,7 +7,7 @@
 
 import Testing
 import Foundation
-@testable import Lantern
+@testable import Octet
 
 private func hex(_ s: String) -> [UInt8] {
     var out: [UInt8] = []

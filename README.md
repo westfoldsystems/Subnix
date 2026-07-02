@@ -3,10 +3,6 @@
 A local-only network toolkit for iOS 17+ and macOS 14+ (native, multiplatform
 SwiftUI, Swift 6 language mode).
 
-> Note: the Xcode target/module/scheme is still named `Lantern` pending a
-> separate module-rename step, so the `xcodebuild -scheme Lantern …` commands
-> below remain accurate until that lands.
-
 **Privacy is the product.** No analytics, no third-party SDKs, no dependencies.
 Tools are either fully on-device or contact only the host you explicitly type.
 The single deliberate third-party call — public-IP reflection in *What's My IP* —
@@ -96,11 +92,11 @@ level to recolor controls globally.
 
 ```sh
 # macOS
-xcodebuild -scheme Lantern -destination 'platform=macOS' build
+xcodebuild -scheme Octet -destination 'platform=macOS' build
 # iOS simulator
-xcodebuild -scheme Lantern -destination 'platform=iOS Simulator,name=iPhone 17' build
+xcodebuild -scheme Octet -destination 'platform=iOS Simulator,name=iPhone 17' build
 # Tests (Swift Testing)
-xcodebuild -scheme Lantern -destination 'platform=macOS' test
+xcodebuild -scheme Octet -destination 'platform=macOS' test
 ```
 
 The macOS build is sandboxed with client-networking only; see

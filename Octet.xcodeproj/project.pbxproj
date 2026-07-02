@@ -12,37 +12,37 @@
 			containerPortal = 5ECB9C552FE22C05008F33C0 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 5ECB9C5C2FE22C05008F33C0;
-			remoteInfo = Lantern;
+			remoteInfo = Octet;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5ECB9C5D2FE22C05008F33C0 /* Lantern.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lantern.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7EB0000000000000000000A2 /* LanternTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LanternTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5ECB9C5D2FE22C05008F33C0 /* Octet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Octet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EB0000000000000000000A2 /* OctetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OctetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5ECB9C6B2FE22C07008F33C0 /* Exceptions for "Lantern" folder in "Lantern" target */ = {
+		5ECB9C6B2FE22C07008F33C0 /* Exceptions for "Octet" folder in "Octet" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 5ECB9C5C2FE22C05008F33C0 /* Lantern */;
+			target = 5ECB9C5C2FE22C05008F33C0 /* Octet */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5ECB9C5F2FE22C05008F33C0 /* Lantern */ = {
+		5ECB9C5F2FE22C05008F33C0 /* Octet */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				5ECB9C6B2FE22C07008F33C0 /* Exceptions for "Lantern" folder in "Lantern" target */,
+				5ECB9C6B2FE22C07008F33C0 /* Exceptions for "Octet" folder in "Octet" target */,
 			);
-			path = Lantern;
+			path = Octet;
 			sourceTree = "<group>";
 		};
-		7EB0000000000000000000A3 /* LanternTests */ = {
+		7EB0000000000000000000A3 /* OctetTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LanternTests;
+			path = OctetTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -68,8 +68,8 @@
 		5ECB9C542FE22C05008F33C0 = {
 			isa = PBXGroup;
 			children = (
-				5ECB9C5F2FE22C05008F33C0 /* Lantern */,
-				7EB0000000000000000000A3 /* LanternTests */,
+				5ECB9C5F2FE22C05008F33C0 /* Octet */,
+				7EB0000000000000000000A3 /* OctetTests */,
 				5ECB9C5E2FE22C05008F33C0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -77,8 +77,8 @@
 		5ECB9C5E2FE22C05008F33C0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5ECB9C5D2FE22C05008F33C0 /* Lantern.app */,
-				7EB0000000000000000000A2 /* LanternTests.xctest */,
+				5ECB9C5D2FE22C05008F33C0 /* Octet.app */,
+				7EB0000000000000000000A2 /* OctetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,9 +86,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5ECB9C5C2FE22C05008F33C0 /* Lantern */ = {
+		5ECB9C5C2FE22C05008F33C0 /* Octet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5ECB9C682FE22C07008F33C0 /* Build configuration list for PBXNativeTarget "Lantern" */;
+			buildConfigurationList = 5ECB9C682FE22C07008F33C0 /* Build configuration list for PBXNativeTarget "Octet" */;
 			buildPhases = (
 				5ECB9C592FE22C05008F33C0 /* Sources */,
 				5ECB9C5A2FE22C05008F33C0 /* Frameworks */,
@@ -99,18 +99,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5ECB9C5F2FE22C05008F33C0 /* Lantern */,
+				5ECB9C5F2FE22C05008F33C0 /* Octet */,
 			);
-			name = Lantern;
+			name = Octet;
 			packageProductDependencies = (
 			);
-			productName = Lantern;
-			productReference = 5ECB9C5D2FE22C05008F33C0 /* Lantern.app */;
+			productName = Octet;
+			productReference = 5ECB9C5D2FE22C05008F33C0 /* Octet.app */;
 			productType = "com.apple.product-type.application";
 		};
-		7EB0000000000000000000A1 /* LanternTests */ = {
+		7EB0000000000000000000A1 /* OctetTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7EB0000000000000000000A9 /* Build configuration list for PBXNativeTarget "LanternTests" */;
+			buildConfigurationList = 7EB0000000000000000000A9 /* Build configuration list for PBXNativeTarget "OctetTests" */;
 			buildPhases = (
 				7EB0000000000000000000A4 /* Sources */,
 				7EB0000000000000000000A5 /* Frameworks */,
@@ -122,13 +122,13 @@
 				7EB0000000000000000000A7 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				7EB0000000000000000000A3 /* LanternTests */,
+				7EB0000000000000000000A3 /* OctetTests */,
 			);
-			name = LanternTests;
+			name = OctetTests;
 			packageProductDependencies = (
 			);
-			productName = LanternTests;
-			productReference = 7EB0000000000000000000A2 /* LanternTests.xctest */;
+			productName = OctetTests;
+			productReference = 7EB0000000000000000000A2 /* OctetTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -150,7 +150,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5ECB9C582FE22C05008F33C0 /* Build configuration list for PBXProject "Lantern" */;
+			buildConfigurationList = 5ECB9C582FE22C05008F33C0 /* Build configuration list for PBXProject "Octet" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -164,8 +164,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5ECB9C5C2FE22C05008F33C0 /* Lantern */,
-				7EB0000000000000000000A1 /* LanternTests */,
+				5ECB9C5C2FE22C05008F33C0 /* Octet */,
+				7EB0000000000000000000A1 /* OctetTests */,
 			);
 		};
 /* End PBXProject section */
@@ -207,7 +207,7 @@
 /* Begin PBXTargetDependency section */
 		7EB0000000000000000000A7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5ECB9C5C2FE22C05008F33C0 /* Lantern */;
+			target = 5ECB9C5C2FE22C05008F33C0 /* Octet */;
 			targetProxy = 7EB0000000000000000000A8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -341,12 +341,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = Lantern/Lantern.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = Octet/Octet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Lantern/Info.plist;
+				INFOPLIST_FILE = Octet/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Octet;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Octet discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Octet contacts no servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -359,7 +359,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.Lantern;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.Octet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -378,12 +378,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = Lantern/Lantern.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = Octet/Octet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Lantern/Info.plist;
+				INFOPLIST_FILE = Octet/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Octet;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Octet discovers services advertised on your local network (mDNS/Bonjour). Discovery stays on this LAN — Octet contacts no servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -396,7 +396,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.Lantern;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.Octet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -420,7 +420,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.LanternTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.OctetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -428,7 +428,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lantern.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lantern";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Octet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Octet";
 			};
 			name = Debug;
 		};
@@ -442,7 +442,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.LanternTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unlimitedtechnology.OctetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -450,14 +450,14 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lantern.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lantern";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Octet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Octet";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5ECB9C582FE22C05008F33C0 /* Build configuration list for PBXProject "Lantern" */ = {
+		5ECB9C582FE22C05008F33C0 /* Build configuration list for PBXProject "Octet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5ECB9C662FE22C07008F33C0 /* Debug */,
@@ -466,7 +466,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5ECB9C682FE22C07008F33C0 /* Build configuration list for PBXNativeTarget "Lantern" */ = {
+		5ECB9C682FE22C07008F33C0 /* Build configuration list for PBXNativeTarget "Octet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5ECB9C692FE22C07008F33C0 /* Debug */,
@@ -475,7 +475,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7EB0000000000000000000A9 /* Build configuration list for PBXNativeTarget "LanternTests" */ = {
+		7EB0000000000000000000A9 /* Build configuration list for PBXNativeTarget "OctetTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7EB0000000000000000000AA /* Debug */,

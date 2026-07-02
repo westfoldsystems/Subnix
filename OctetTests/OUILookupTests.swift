@@ -5,7 +5,7 @@
 //
 
 import Testing
-@testable import Lantern
+@testable import Octet
 
 struct OUILookupTests {
 

@@ -8,7 +8,7 @@
 
 import Testing
 import Foundation
-@testable import Lantern
+@testable import Octet
 
 struct OUIDatabaseTests {
 
