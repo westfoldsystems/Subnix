@@ -28,6 +28,7 @@ struct LANHost: Identifiable, Sendable {
     var openPorts: [Int] = []            // TCP ports that answered during the sweep
     var isGateway = false                // this host is the default route (router)
     var latency: TimeInterval?           // fastest TCP-connect RTT, seconds
+    var tlsName: String?                 // leaf-cert subject CN (hosts with 443 open)
 
     /// Best-guess device type from the open-port fingerprint.
     var deviceHint: String? { LANScanner.deviceHint(openPorts: openPorts) }
@@ -136,6 +137,23 @@ final class LANScanner {
             if let name = await Self.reverseDNS(ip) { hosts[index].hostname = name }
         }
 
+        // Cert names: for every host with 443 open, grab the leaf-cert subject CN
+        // (accepts self-signed — routers/NAS usually present one). Bounded fan-out.
+        let tlsHosts = hosts.filter { $0.openPorts.contains(443) }.map(\.ip)
+        if !tlsHosts.isEmpty, !Task.isCancelled {
+            let names = await withTaskGroup(of: (String, String?).self) { group in
+                for ip in tlsHosts {
+                    group.addTask { (ip, await Self.tlsCertName(ip)) }
+                }
+                var out: [String: String] = [:]
+                for await (ip, cn) in group where cn != nil { out[ip] = cn }
+                return out
+            }
+            for index in hosts.indices {
+                if let cn = names[hosts[index].ip] { hosts[index].tlsName = cn }
+            }
+        }
+
         state = .finished
     }
 
@@ -186,6 +204,15 @@ final class LANScanner {
         if p.contains(22)                    { return "Linux / Unix (SSH)" }
         if p.contains(443) || p.contains(80) || p.contains(8080) { return "Web server / router" }
         return nil
+    }
+
+    /// Leaf-cert subject CN for an HTTPS host, or nil. The handshake
+    /// (`fetchCertChain`) runs off-main; only the tiny DER parse — which is
+    /// main-actor-isolated under the module default — lands back here.
+    static func tlsCertName(_ ip: String) async -> String? {
+        guard let ders = try? await TLSInspector.fetchCertChain(host: ip, port: 443, timeout: 3),
+              let leaf = ders.first else { return nil }
+        return X509Certificate.parse(der: leaf)?.subjectCN
     }
 
     nonisolated static func reverseDNS(_ ip: String) async -> String? {

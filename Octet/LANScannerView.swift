@@ -66,6 +66,9 @@ struct LANScannerView: View {
                                     Text("open: " + host.openPorts.map { PortList.serviceName(for: $0) ?? String($0) }.joined(separator: ", "))
                                         .font(.caption2).foregroundStyle(.octetMuted)
                                 }
+                                if let tls = host.tlsName {
+                                    Text("cert: \(tls)").font(.caption2).foregroundStyle(.octetMuted)
+                                }
                                 if let vendor = host.vendor {
                                     Text(vendor).font(.caption2).foregroundStyle(.octetMuted)
                                 }
