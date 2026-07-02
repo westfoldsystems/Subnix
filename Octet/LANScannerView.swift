@@ -52,6 +52,9 @@ struct LANScannerView: View {
                                     }
                                     .font(.caption2).foregroundStyle(.octetAccent)
                                 }
+                                if let bonjour = host.bonjourName {
+                                    Text(bonjour).font(.caption2.weight(.medium)).foregroundStyle(.octetInk)
+                                }
                                 if host.hostname != nil {
                                     Text(host.ip).font(.caption2).foregroundStyle(.octetMuted)
                                 }

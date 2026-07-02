@@ -29,6 +29,7 @@ struct LANHost: Identifiable, Sendable {
     var isGateway = false                // this host is the default route (router)
     var latency: TimeInterval?           // fastest TCP-connect RTT, seconds
     var tlsName: String?                 // leaf-cert subject CN (hosts with 443 open)
+    var bonjourName: String?             // friendly mDNS instance name, if advertised
 
     /// Best-guess device type from the open-port fingerprint.
     var deviceHint: String? { LANScanner.deviceHint(openPorts: openPorts) }
@@ -112,6 +113,11 @@ final class LANScanner {
         // Enrich: fold in ARP (adds hosts that answered ARP but no TCP port),
         // then attach MAC/vendor/hostname.
         state = .enriching
+
+        // Kick off the Bonjour/mDNS name join now so its browse budget overlaps
+        // with the ARP / reverse-DNS / TLS work below instead of adding to it.
+        async let bonjourNames = LANmDNS.resolve()
+
         let arp = ARPTable.entries()
         for (ip, _) in arp where Self.inSameSlash24(ip, as: subnet) {
             insertHost(ip)
@@ -152,6 +158,16 @@ final class LANScanner {
             for index in hosts.indices {
                 if let cn = names[hosts[index].ip] { hosts[index].tlsName = cn }
             }
+        }
+
+        // Join the mDNS names (started above). Attach to known hosts, and surface
+        // any in-subnet device that only advertised Bonjour (no TCP answer).
+        let mdns = await bonjourNames
+        for (ip, _) in mdns where Self.inSameSlash24(ip, as: subnet) {
+            if !hosts.contains(where: { $0.ip == ip }) { insertHost(ip) }
+        }
+        for index in hosts.indices {
+            if let name = mdns[hosts[index].ip] { hosts[index].bonjourName = name }
         }
 
         state = .finished
