@@ -137,7 +137,7 @@ final class LANScanner {
             if let mac = arp[ip] {
                 hosts[index].mac = mac
                 if let parsed = try? MACAddress.parse(mac) {
-                    hosts[index].vendor = OUILookup.shared.vendor(for: parsed)
+                    hosts[index].vendor = OUIStore.shared.vendor(for: parsed)
                 }
             }
             if let name = await Self.reverseDNS(ip) { hosts[index].hostname = name }

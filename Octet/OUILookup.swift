@@ -67,10 +67,6 @@ struct OUILookup {
         return OUILookup(entries: entries)
     }
 
-    /// The bundled database, parsed exactly once. SwiftUI recreates view structs
-    /// constantly, so the UI must read this rather than re-parsing 39k rows per init.
-    static let shared = OUILookup.bundled()
-
     /// Load `oui-mal.tsv` from the app bundle. Returns an empty table (not an
     /// error) when the file isn't present, so the UI can degrade gracefully
     /// until a database is bundled.
