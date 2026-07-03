@@ -7,8 +7,16 @@
 import SwiftUI
 
 struct PingView: View {
+    private enum Mode: String, CaseIterable, Identifiable {
+        case icmp = "ICMP"
+        case tcp = "TCP"
+        var id: String { rawValue }
+    }
+
     @State private var host = "1.1.1.1"
     @State private var count = 5
+    @State private var mode: Mode = .icmp
+    @State private var port = "443"
     @State private var engine = PingEngine()
 
     var body: some View {
@@ -22,6 +30,20 @@ struct PingView: View {
                     .keyboardType(.URL)
                     #endif
                     .onSubmit(run)
+
+                Picker("Method", selection: $mode) {
+                    ForEach(Mode.allCases) { Text($0.rawValue).tag($0) }
+                }
+                .pickerStyle(.segmented)
+
+                if mode == .tcp {
+                    TextField("Port", text: $port)
+                        .font(.system(.body, design: .monospaced))
+                        #if os(iOS)
+                        .keyboardType(.numberPad)
+                        #endif
+                }
+
                 Stepper("Packets: \(count)", value: $count, in: 1...20)
             }
 
@@ -70,13 +92,23 @@ struct PingView: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            Text("Sends ICMP echo to the host you type. ICMP availability depends on the platform/sandbox.")
+            Text(mode == .icmp
+                 ? "ICMP echo to the host you type. ICMP availability depends on the platform/sandbox — try TCP if it’s blocked."
+                 : "TCP connect timing to host:port. A refused port still counts as reachable. Works where ICMP is blocked.")
                 .font(.caption2).foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity).padding(8).background(.bar)
         }
     }
 
-    private func run() { engine.start(host: host, count: count) }
+    private func run() {
+        switch mode {
+        case .icmp:
+            engine.start(host: host, count: count, transport: .icmp)
+        case .tcp:
+            let p = Int(port.trimmingCharacters(in: .whitespaces)) ?? 443
+            engine.start(host: host, count: count, transport: .tcp(port: p))
+        }
+    }
 }
 
 #Preview {

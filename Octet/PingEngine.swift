@@ -16,6 +16,7 @@
 
 import Foundation
 import Darwin
+import Network
 import Observation
 import os
 
@@ -23,6 +24,13 @@ enum PingOutcome: Sendable {
     case reply(seq: Int, rtt: TimeInterval)
     case lost(seq: Int)
     case error(String)
+}
+
+/// How to probe reachability. ICMP is the real thing but is sandbox-restricted
+/// on iOS; TCP connect-timing works anywhere outbound TCP is allowed.
+enum PingTransport: Equatable, Sendable {
+    case icmp
+    case tcp(port: Int)
 }
 
 @MainActor
@@ -52,15 +60,20 @@ final class PingEngine {
 
     // MARK: - Control
 
-    func start(host: String, count: Int = 5) {
+    func start(host: String, count: Int = 5, transport: PingTransport = .icmp) {
         cancel()
         let host = host.trimmingCharacters(in: .whitespaces)
         guard !host.isEmpty else { state = .idle; return }
         probes = []
         state = .pinging
 
+        let stream: AsyncStream<PingOutcome> = switch transport {
+        case .icmp:            Self.stream(host: host, count: count)
+        case .tcp(let port):   Self.tcpStream(host: host, port: port, count: count)
+        }
+
         task = Task { @MainActor [weak self] in
-            for await outcome in Self.stream(host: host, count: count) {
+            for await outcome in stream {
                 if Task.isCancelled { break }
                 switch outcome {
                 case .reply(let seq, let rtt): self?.probes.append(Probe(seq: seq, rtt: rtt))
@@ -92,6 +105,79 @@ final class PingEngine {
                 continuation.finish()
             }
         }
+    }
+
+    // MARK: - TCP connect-ping (isolation-free; Network.framework)
+
+    /// Reachability by TCP connect timing. A completed handshake OR a refusal
+    /// (RST) both mean the host answered — that's the RTT; a timeout is a loss.
+    /// Works wherever outbound TCP is allowed, including the iOS sandbox.
+    nonisolated static func tcpStream(host: String, port: Int, count: Int,
+                                      interval: TimeInterval = 1,
+                                      timeout: TimeInterval = 2) -> AsyncStream<PingOutcome> {
+        AsyncStream { continuation in
+            let cancelled = OSAllocatedUnfairLock(initialState: false)
+            continuation.onTermination = { _ in cancelled.withLock { $0 = true } }
+            Task {
+                guard UInt16(exactly: port) != nil else {
+                    continuation.yield(.error("Port must be 1–65535.")); continuation.finish(); return
+                }
+                for seq in 0..<count {
+                    if cancelled.withLock({ $0 }) { break }
+                    if let rtt = await tcpConnectRTT(host: host, port: port, timeout: timeout) {
+                        continuation.yield(.reply(seq: seq, rtt: rtt))
+                    } else {
+                        continuation.yield(.lost(seq: seq))
+                    }
+                    if seq < count - 1, !cancelled.withLock({ $0 }) {
+                        try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+                    }
+                }
+                continuation.finish()
+            }
+        }
+    }
+
+    /// RTT to first definitive TCP response (ready or refused), or nil on timeout.
+    nonisolated private static func tcpConnectRTT(host: String, port: Int,
+                                                  timeout: TimeInterval) async -> TimeInterval? {
+        guard let raw = UInt16(exactly: port), let nwPort = NWEndpoint.Port(rawValue: raw) else { return nil }
+        let connection = NWConnection(host: NWEndpoint.Host(host), port: nwPort, using: .tcp)
+        let queue = DispatchQueue(label: "app.octet.tcpping")
+        let start = DispatchTime.now()
+        let resumed = OSAllocatedUnfairLock(initialState: false)
+
+        let rtt: TimeInterval? = await withCheckedContinuation { cont in
+            @Sendable func elapsed() -> TimeInterval {
+                Double(DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1e9
+            }
+            @Sendable func finish(_ value: TimeInterval?) {
+                let isFirst = resumed.withLock { done -> Bool in
+                    if done { return false }
+                    done = true
+                    return true
+                }
+                if isFirst { cont.resume(returning: value) }
+            }
+            connection.stateUpdateHandler = { newState in
+                switch newState {
+                case .ready:
+                    finish(elapsed())
+                case .waiting(let error):
+                    // Refused (RST) means the host is up and answered — a hit.
+                    if case .posix(.ECONNREFUSED) = error { finish(elapsed()) }
+                case .failed:
+                    finish(nil)
+                default:
+                    break
+                }
+            }
+            queue.asyncAfter(deadline: .now() + timeout) { finish(nil) }
+            connection.start(queue: queue)
+        }
+
+        connection.cancel()
+        return rtt
     }
 
     // MARK: - Socket work
