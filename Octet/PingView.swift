@@ -15,7 +15,9 @@ struct PingView: View {
 
     @State private var host = "1.1.1.1"
     @State private var count = 5
-    @State private var mode: Mode = .icmp
+    // TCP is the default: it works in the macOS sandbox and on iOS regardless of
+    // whether ICMP is permitted. Users can switch to ICMP explicitly.
+    @State private var mode: Mode = .tcp
     @State private var port = "443"
     @State private var engine = PingEngine()
 
@@ -78,6 +80,23 @@ struct PingView: View {
                     }
                 }
             }
+
+            if suggestTCP {
+                Section {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("No ICMP replies. ICMP is often blocked (e.g. the macOS sandbox) — TCP works anywhere.",
+                              systemImage: "info.circle")
+                            .font(.callout).foregroundStyle(.octetMuted)
+                        Button("Retry with TCP") {
+                            mode = .tcp
+                            run()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.octetAccent)
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
         }
         .formStyle(.grouped)
         .octetScreen()
@@ -97,6 +116,17 @@ struct PingView: View {
                  : "TCP connect timing to host:port. A refused port still counts as reachable. Works where ICMP is blocked.")
                 .font(.caption2).foregroundStyle(.octetMuted)
                 .frame(maxWidth: .infinity).padding(8).background(.bar)
+        }
+    }
+
+    /// After an ICMP run that got no replies (or couldn't open the socket), nudge
+    /// the user toward TCP — the mode that works in the sandbox and on the sim.
+    private var suggestTCP: Bool {
+        guard mode == .icmp else { return false }
+        switch engine.state {
+        case .finished: return engine.statistics.transmitted > 0 && engine.statistics.received == 0
+        case .failed:   return true
+        default:        return false
         }
     }
 
