@@ -18,6 +18,9 @@ struct ResultRow: View {
     /// Value text color — defaults to ink; status rows pass a status token.
     var valueColor: Color
 
+    // Drives the OS text-size (Dynamic Type) setting into the layout choice.
+    @Environment(\.dynamicTypeSize) private var typeSize
+
     init(_ label: String, _ value: String, valueColor: Color = .octetInk) {
         self.label = label
         self.value = value
@@ -25,25 +28,44 @@ struct ResultRow: View {
     }
 
     var body: some View {
-        // Reference wiring of the Octet color tokens (see Color+Octet.swift).
-        HStack(alignment: .firstTextBaseline) {
-            Text(label)
-                .foregroundStyle(.octetMuted)
-            Spacer(minLength: 12)
-            Text(value)
-                .font(.system(.body, design: .monospaced))
-                .foregroundStyle(valueColor)
-                .multilineTextAlignment(.trailing)
-                .textSelection(.enabled)
-        }
-        .contextMenu {
-            Button {
-                copyToPasteboard(value)
-            } label: {
-                Label("Copy", systemImage: "doc.on.doc")
+        content
+            .contextMenu {
+                Button {
+                    copyToPasteboard(value)
+                } label: {
+                    Label("Copy", systemImage: "doc.on.doc")
+                }
+                .tint(.octetAccent)
             }
-            .tint(.octetAccent)
+    }
+
+    // Label + value share a line normally, but at accessibility text sizes that
+    // can't fit without truncating — so stack them vertically instead.
+    @ViewBuilder
+    private var content: some View {
+        if typeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .foregroundStyle(.octetMuted)
+                valueText
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        } else {
+            HStack(alignment: .firstTextBaseline) {
+                Text(label)
+                    .foregroundStyle(.octetMuted)
+                Spacer(minLength: 12)
+                valueText
+                    .multilineTextAlignment(.trailing)
+            }
         }
+    }
+
+    private var valueText: some View {
+        Text(value)
+            .font(.system(.body, design: .monospaced))
+            .foregroundStyle(valueColor)
+            .textSelection(.enabled)
     }
 
     private func copyToPasteboard(_ string: String) {
