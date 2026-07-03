@@ -40,11 +40,23 @@ struct LANScannerView: View {
             if !scanner.hosts.isEmpty {
                 Section("Hosts") {
                     ForEach(scanner.hosts) { host in
-                        HStack(alignment: .top, spacing: 10) {
-                            // Every host that turns up in the sweep is live.
-                            Circle().fill(.statusOnline).frame(width: 8, height: 8).padding(.top, 6)
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack(alignment: .center, spacing: 10) {
+                                // Every host in the sweep is live; the dot sits
+                                // centered on the identifier line.
+                                Circle().fill(.statusOnline).frame(width: 8, height: 8)
+                                if let mac = host.mac {
+                                    ResultRow(host.hostname ?? host.ip, mac)
+                                } else {
+                                    // No MAC on iOS (ARP read is macOS-only) — show
+                                    // the identifier alone rather than a bare dash.
+                                    Text(host.hostname ?? host.ip)
+                                        .foregroundStyle(.octetInk)
+                                        .textSelection(.enabled)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
                             VStack(alignment: .leading, spacing: 2) {
-                                ResultRow(host.hostname ?? host.ip, host.mac ?? "—")
                                 if host.ip == scanner.selfIP || host.isGateway {
                                     HStack(spacing: 6) {
                                         if host.ip == scanner.selfIP { Text("This device") }
@@ -76,6 +88,7 @@ struct LANScannerView: View {
                                     Text(vendor).font(.caption2).foregroundStyle(.octetMuted)
                                 }
                             }
+                            .padding(.leading, 18)   // align captions under the identifier (dot 8 + spacing 10)
                         }
                     }
                 }
