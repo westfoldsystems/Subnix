@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 #if os(iOS)
 import UIKit
 #elseif os(macOS)
@@ -70,7 +71,15 @@ struct ResultRow: View {
 
     private func copyToPasteboard(_ string: String) {
         #if os(iOS)
-        UIPasteboard.general.string = string
+        // Local-only (no Universal Clipboard / Handoff to other devices) and
+        // auto-expiring, so copied IPs/hostnames don't sync off-device or linger.
+        UIPasteboard.general.setItems(
+            [[UTType.utf8PlainText.identifier: string]],
+            options: [
+                .localOnly: true,
+                .expirationDate: Date().addingTimeInterval(90),
+            ]
+        )
         #elseif os(macOS)
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(string, forType: .string)

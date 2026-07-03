@@ -246,13 +246,26 @@ final class PingEngine {
                 guard n > ihl + 8 else { continue }
                 offset = ihl
             }
-            let type = buffer[offset]
-            guard type == (isV6 ? 129 : 0) else { continue }   // echo reply
-            let seq = (UInt16(buffer[offset + 6]) << 8) | UInt16(buffer[offset + 7])
-            if seq == expectSeq {
+            if Self.isEchoReply(buffer, offset: offset, available: n, expectSeq: expectSeq, isV6: isV6) {
                 return Double(DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1e9
             }
         }
+    }
+
+    /// Whether the ICMP message at `offset` (with `available` valid bytes) is OUR
+    /// echo reply: correct reply type, matching sequence, AND our payload echoed
+    /// back. The payload check rejects unrelated or spoofed replies that merely
+    /// share the sequence number. Pure.
+    nonisolated static func isEchoReply(_ buffer: [UInt8], offset: Int, available: Int,
+                                        expectSeq: UInt16, isV6: Bool) -> Bool {
+        guard offset >= 0, offset + 8 <= available else { return false }
+        guard buffer[offset] == (isV6 ? 129 : 0) else { return false }   // echo reply type
+        let seq = (UInt16(buffer[offset + 6]) << 8) | UInt16(buffer[offset + 7])
+        guard seq == expectSeq else { return false }
+        let payloadStart = offset + 8
+        let payloadEnd = payloadStart + echoPayload.count
+        guard payloadEnd <= available else { return false }
+        return Array(buffer[payloadStart..<payloadEnd]) == echoPayload
     }
 
     nonisolated private static func resolve(_ host: String) -> (addr: [UInt8], family: Int32)? {
@@ -270,6 +283,10 @@ final class PingEngine {
         return (bytes, info.pointee.ai_family)
     }
 
+    /// 16-byte marker echoed in every request. Replies must return it (RFC 792),
+    /// so we can reject unrelated/spoofed ICMP that merely shares our sequence.
+    nonisolated static let echoPayload: [UInt8] = Array("octet-echo-pkt-x".utf8.prefix(16))
+
     nonisolated private static func makeEcho(isV6: Bool, identifier: UInt16, sequence: UInt16) -> [UInt8] {
         var pkt: [UInt8] = [
             isV6 ? 128 : 8, 0,           // type, code
@@ -277,7 +294,7 @@ final class PingEngine {
             UInt8(identifier >> 8), UInt8(identifier & 0xFF),
             UInt8(sequence >> 8), UInt8(sequence & 0xFF),
         ]
-        pkt += Array("octet-echo-pkt-x".utf8.prefix(16))   // 16-byte payload
+        pkt += echoPayload               // 16-byte payload
         if !isV6 {
             let ck = checksum(pkt)
             pkt[2] = UInt8(ck >> 8)
