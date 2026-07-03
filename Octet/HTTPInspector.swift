@@ -53,12 +53,14 @@ enum HTTPInspectorError: LocalizedError, Equatable {
     case invalidURL
     case notHTTP
     case tooManyRedirects
+    case unsafeRedirect
 
     var errorDescription: String? {
         switch self {
         case .invalidURL:       return "That isn’t a valid http/https URL."
         case .notHTTP:          return "The server didn’t return an HTTP response."
         case .tooManyRedirects: return "Too many redirects — stopped to avoid a loop."
+        case .unsafeRedirect:   return "Server redirected to a non-HTTP(S) location — stopped."
         }
     }
 }
@@ -160,8 +162,13 @@ final class HTTPInspector {
             let statusText = HTTPURLResponse.localizedString(forStatusCode: http.statusCode).capitalized
 
             if (300..<400).contains(http.statusCode),
-               let location = http.value(forHTTPHeaderField: "Location"),
-               let next = URL(string: location, relativeTo: current)?.absoluteURL {
+               let location = http.value(forHTTPHeaderField: "Location") {
+                // Re-validate every hop: never follow a redirect off http/https
+                // (e.g. file://, data:, javascript:) even though the sandbox and
+                // the HTTPURLResponse cast would already reject it downstream.
+                guard let next = Self.safeRedirectTarget(location: location, relativeTo: current) else {
+                    throw HTTPInspectorError.unsafeRedirect
+                }
                 chain.append(HTTPHop(url: current.absoluteString,
                                      status: http.statusCode,
                                      statusText: statusText,
@@ -176,21 +183,35 @@ final class HTTPInspector {
         throw HTTPInspectorError.tooManyRedirects
     }
 
-    /// HEAD first; fall back to GET if the server rejects HEAD.
+    /// Resolve a `Location` against the current URL, but only if it lands on an
+    /// http/https URL with a host. Returns nil for any other scheme so the
+    /// inspector never follows a redirect off the web. Pure.
+    nonisolated static func safeRedirectTarget(location: String, relativeTo current: URL) -> URL? {
+        guard let next = URL(string: location, relativeTo: current)?.absoluteURL,
+              let scheme = next.scheme?.lowercased(), scheme == "http" || scheme == "https",
+              next.host != nil else { return nil }
+        return next
+    }
+
+    /// HEAD first; fall back to GET if the server rejects HEAD. We only ever need
+    /// the response headers, so read the response with `bytes(for:)` and cancel
+    /// before the body streams — a hostile server can't make us buffer a payload.
     nonisolated private static func request(_ url: URL,
                                             session: URLSession,
                                             delegate: URLSessionTaskDelegate) async throws -> (method: String, http: HTTPURLResponse) {
         var head = URLRequest(url: url)
         head.httpMethod = "HEAD"
-        if let (_, response) = try? await session.data(for: head, delegate: delegate),
-           let http = response as? HTTPURLResponse,
-           http.statusCode != 405, http.statusCode != 501 {
-            return ("HEAD", http)
+        if let (bytes, response) = try? await session.bytes(for: head, delegate: delegate) {
+            bytes.task.cancel()
+            if let http = response as? HTTPURLResponse, http.statusCode != 405, http.statusCode != 501 {
+                return ("HEAD", http)
+            }
         }
 
         var get = URLRequest(url: url)
         get.httpMethod = "GET"
-        let (_, response) = try await session.data(for: get, delegate: delegate)
+        let (bytes, response) = try await session.bytes(for: get, delegate: delegate)
+        bytes.task.cancel()
         guard let http = response as? HTTPURLResponse else { throw HTTPInspectorError.notHTTP }
         return ("GET", http)
     }

@@ -5,9 +5,27 @@
 //
 
 import Testing
+import Foundation
 @testable import Octet
 
 struct HTTPSecurityTests {
+
+    @Test func redirectTargetOnlyFollowsHTTP() throws {
+        let base = try #require(URL(string: "https://example.com/a"))
+
+        // http/https targets are allowed (absolute + relative + scheme-relative).
+        #expect(HTTPInspector.safeRedirectTarget(location: "https://elsewhere.test/x", relativeTo: base)?.absoluteString == "https://elsewhere.test/x")
+        #expect(HTTPInspector.safeRedirectTarget(location: "http://plain.test/", relativeTo: base)?.scheme == "http")
+        #expect(HTTPInspector.safeRedirectTarget(location: "/b", relativeTo: base)?.absoluteString == "https://example.com/b")
+        #expect(HTTPInspector.safeRedirectTarget(location: "//cdn.test/c", relativeTo: base)?.absoluteString == "https://cdn.test/c")
+
+        // Anything off the web is refused.
+        #expect(HTTPInspector.safeRedirectTarget(location: "file:///etc/passwd", relativeTo: base) == nil)
+        #expect(HTTPInspector.safeRedirectTarget(location: "data:text/html,<b>x</b>", relativeTo: base) == nil)
+        #expect(HTTPInspector.safeRedirectTarget(location: "javascript:alert(1)", relativeTo: base) == nil)
+        #expect(HTTPInspector.safeRedirectTarget(location: "mailto:a@b.test", relativeTo: base) == nil)
+        #expect(HTTPInspector.safeRedirectTarget(location: "ftp://host.test/f", relativeTo: base) == nil)
+    }
 
     @Test func surfacesPresentAndAbsentHeaders() {
         // Mixed-case names to prove the lookup is case-insensitive.

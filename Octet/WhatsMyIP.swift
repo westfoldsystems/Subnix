@@ -135,11 +135,19 @@ final class WhatsMyIP {
             do {
                 var request = URLRequest(url: endpoint.url)
                 request.timeoutInterval = 8
-                let (data, response) = try await session.data(for: request)
+                let (bytes, response) = try await session.bytes(for: request)
                 guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
                     lastReason = "unexpected response"
                     continue
                 }
+                // Reflectors return a few dozen bytes; cap the read so a hostile
+                // or misbehaving endpoint can't stream an unbounded body into memory.
+                var data = Data()
+                for try await byte in bytes {
+                    data.append(byte)
+                    if data.count >= 64_000 { break }
+                }
+                bytes.task.cancel()
                 let ip = endpoint.isTrace
                     ? PublicIPParser.parseTrace(String(decoding: data, as: UTF8.self))
                     : PublicIPParser.parseIPify(data)
