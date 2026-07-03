@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Export compliance: Octet uses only standard, OS-provided encryption
+	     (HTTPS/TLS via URLSession + Network.framework, and Apple's Security
+	     framework). No proprietary crypto → exempt. Declaring this here stops
+	     App Store Connect asking about encryption on every submission. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+
 	<!-- Bonjour service types Octet is allowed to browse. This MUST stay in
 	     sync with BonjourScanner.defaultServiceTypes — iOS (and macOS 15+)
 	     return nothing for any type not declared here. Array-typed, so it lives
