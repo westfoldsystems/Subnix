@@ -226,8 +226,8 @@ final class LANScanner {
     /// (`fetchCertChain`) runs off-main; only the tiny DER parse — which is
     /// main-actor-isolated under the module default — lands back here.
     static func tlsCertName(_ ip: String) async -> String? {
-        guard let ders = try? await TLSInspector.fetchCertChain(host: ip, port: 443, timeout: 3),
-              let leaf = ders.first else { return nil }
+        guard let handshake = try? await TLSInspector.fetchCertChain(host: ip, port: 443, timeout: 3),
+              let leaf = handshake.ders.first else { return nil }
         return X509Certificate.parse(der: leaf)?.subjectCN
     }
 

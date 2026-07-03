@@ -75,6 +75,17 @@ struct TLSCertificateView: View {
 
     @ViewBuilder
     private func reportSections(_ report: TLSReport) -> some View {
+        if report.tlsVersion != nil || report.cipher != nil {
+            Section("Connection") {
+                if let version = report.tlsVersion {
+                    ResultRow("Protocol", version, valueColor: modernProtocol(version) ? .statusOnline : .statusTimeout)
+                }
+                if let cipher = report.cipher {
+                    ResultRow("Cipher", cipher)
+                }
+            }
+        }
+
         if let leaf = report.leaf {
             Section("Leaf certificate") {
                 ResultRow("Subject CN", leaf.subjectCN ?? "—")
@@ -84,7 +95,9 @@ struct TLSCertificateView: View {
                 }
                 if let notAfter = leaf.notAfter {
                     ResultRow("Valid until", notAfter.formatted(date: .abbreviated, time: .shortened))
-                    ResultRow("Expires", expiry(notAfter))
+                }
+                if let verdict = verdict(for: leaf) {
+                    ResultRow("Status", verdict.text, valueColor: verdict.color)
                 }
                 ResultRow("Signature", leaf.signatureAlgorithm ?? "—")
                 ResultRow("Public key", keyDescription(leaf))
@@ -128,12 +141,26 @@ struct TLSCertificateView: View {
         }
     }
 
-    private func expiry(_ date: Date) -> String {
-        let days = Int((date.timeIntervalSinceNow / 86_400).rounded(.towardZero))
-        if days < 0 { return "expired \(-days) day\(-days == 1 ? "" : "s") ago" }
-        if days == 0 { return "today" }
-        return "in \(days) day\(days == 1 ? "" : "s")"
+    private func modernProtocol(_ version: String) -> Bool {
+        version == "TLS 1.3" || version == "TLS 1.2"
     }
+
+    /// Colorized validity verdict, with a self-signed note (subject == issuer).
+    private func verdict(for leaf: CertSummary) -> (text: String, color: Color)? {
+        guard let validity = TLSInspector.validity(notBefore: leaf.notBefore,
+                                                   notAfter: leaf.notAfter, now: Date()) else { return nil }
+        let base: (String, Color)
+        switch validity {
+        case .valid(let d):        base = ("Valid · \(days(d)) left", .statusOnline)
+        case .expiringSoon(let d): base = ("Expiring soon · \(days(d)) left", .statusTimeout)
+        case .expired:             base = ("Expired", .statusError)
+        case .notYetValid:         base = ("Not yet valid", .statusError)
+        }
+        let selfSigned = leaf.subjectCN != nil && leaf.subjectCN == leaf.issuerCN
+        return (selfSigned ? base.0 + " · self-signed" : base.0, base.1)
+    }
+
+    private func days(_ n: Int) -> String { "\(n) day\(n == 1 ? "" : "s")" }
 
     private func inspect() {
         inspector.inspect(host: host, port: Int(portText) ?? 443)
