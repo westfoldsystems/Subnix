@@ -125,6 +125,15 @@ struct LANScannerTool: @MainActor NetworkTool {
     var view: AnyView { AnyView(LANScannerView()) }
 }
 
+struct WakeOnLANTool: @MainActor NetworkTool {
+    let id = "wol"
+    let name = "Wake-on-LAN"
+    let summary = "Wake a device by its MAC with a magic packet — local broadcast only."
+    let systemImage = "power"
+    let category: ToolCategory = .diagnostics
+    var view: AnyView { AnyView(WakeOnLANView()) }
+}
+
 // MARK: - Registry
 
 @MainActor
@@ -146,6 +155,7 @@ enum ToolRegistry {
         DNSTool(),
         // Diagnostics
         PingTool(),
+        WakeOnLANTool(),
         // Discovery
         BonjourTool(),
         LANScannerTool(),
