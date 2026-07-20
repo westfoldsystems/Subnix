@@ -1,4 +1,4 @@
-# Octet — App Store submission metadata
+# Subnix — App Store submission metadata
 
 Everything needed for App Store Connect, ready to paste. Character limits noted; all copy is within them.
 
@@ -6,12 +6,12 @@ Everything needed for App Store Connect, ready to paste. Character limits noted;
 
 ## Identity
 
-- **App name** (≤30): `Octet`
+- **App name** (≤30): `Subnix`
 - **Subtitle** (≤30) — pick one:
   - `Privacy-first network toolkit` (29) ← recommended
   - `On-device network toolkit` (25)
   - `Network tools, no tracking` (26)
-- **Bundle ID:** replace the `app.octet.Octet` placeholder with your Team's reverse-DNS ID before archiving.
+- **Bundle ID:** replace the `app.subnix.Subnix` placeholder with your Team's reverse-DNS ID before archiving.
 - **Primary category:** Utilities
 - **Secondary category:** Developer Tools
 - **Age rating:** 4+ (no objectionable content)
@@ -32,7 +32,7 @@ The network toolkit that stays on your device. Subnet math, DNS, TLS, ports, LAN
 ## Description (≤4000)
 
 ```
-Octet is a complete network toolkit that runs entirely on your device. No account. No ads. No tracking. No analytics. The calculators and lookups work with no signal at all — on a plane, in a data center, anywhere.
+Subnix is a complete network toolkit that runs entirely on your device. No account. No ads. No tracking. No analytics. The calculators and lookups work with no signal at all — on a plane, in a data center, anywhere.
 
 Fourteen focused tools, one clean app, on iPhone, iPad, and Mac.
 
@@ -59,14 +59,14 @@ DISCOVERY
 • LAN Scanner — sweep your subnet and identify live hosts with MAC, vendor, hostname, open ports, device type, latency, and TLS/Bonjour names.
 
 PRIVATE BY DESIGN
-Octet has no user accounts and collects no data about you. The only connections it makes are the ones you ask for — the host you type into a tool, an opt-in public-IP check, or an opt-in vendor-database refresh. Everything else is computed on-device.
+Subnix has no user accounts and collects no data about you. The only connections it makes are the ones you ask for — the host you type into a tool, an opt-in public-IP check, or an opt-in vendor-database refresh. Everything else is computed on-device.
 
 BUILT FOR THE PLATFORM
 • Universal — one purchase for iPhone, iPad, and Mac.
 • Shortcuts and Siri — run "What's my IP", subnet math, and host-reachability checks from the Shortcuts app.
 • Full Dynamic Type and light/dark support.
 
-Octet is for network engineers, sysadmins, developers, students, and home-lab tinkerers who want fast, trustworthy tools without the bloat.
+Subnix is for network engineers, sysadmins, developers, students, and home-lab tinkerers who want fast, trustworthy tools without the bloat.
 ```
 
 ---
@@ -103,7 +103,7 @@ Set **Privacy Policy URL** (required — host `PRIVACY.md` somewhere public).
 ## App Review notes (paste into "Notes")
 
 ```
-Octet is an offline-first network diagnostics utility. No account or login is required — every feature is available immediately.
+Subnix is an offline-first network diagnostics utility. No account or login is required — every feature is available immediately.
 
 Network use is core functionality and always user-initiated:
 • Tools like Ping, TCP Port Check, HTTP/TLS inspectors, and DNS Lookup connect only to the host the reviewer enters.
@@ -120,7 +120,7 @@ Note on ICMP: Ping defaults to a TCP connect mode because ICMP is restricted in 
 
 ## Export compliance
 
-Octet uses only standard, OS-provided encryption (HTTPS/TLS via URLSession and Network.framework, and Apple's Security framework for reading certificate key info). It implements no proprietary cryptography. This qualifies as **exempt**.
+Subnix uses only standard, OS-provided encryption (HTTPS/TLS via URLSession and Network.framework, and Apple's Security framework for reading certificate key info). It implements no proprietary cryptography. This qualifies as **exempt**.
 
 - Recommended: add `ITSAppUsesNonExemptEncryption = NO` to the build settings / Info.plist so App Store Connect stops asking each submission. (Offer stands to wire this up.)
 

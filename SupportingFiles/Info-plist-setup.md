@@ -1,11 +1,11 @@
 # Info.plist, entitlements & bundled-data setup
 
-Octet is local-only. This file is the single place that records every
+Subnix is local-only. This file is the single place that records every
 platform declaration the app needs and every byte of data or endpoint it
 touches, so the privacy posture stays auditable.
 
 The app's `Info.plist` is **generated** (`GENERATE_INFOPLIST_FILE = YES`) and
-**merged** with a small hand-written partial at `Octet/Info.plist`. Scalar
+**merged** with a small hand-written partial at `Subnix/Info.plist`. Scalar
 keys live as `INFOPLIST_KEY_*` build settings; array keys live in the partial.
 
 ---
@@ -17,10 +17,10 @@ on iOS, and (since macOS 15) prompts the user on macOS too.
 
 | Key | Where it's set | Value |
 |---|---|---|
-| `NSBonjourServices` | `Octet/Info.plist` (array) | the 14 service types in `BonjourScanner.defaultServiceTypes` — keep them in sync |
+| `NSBonjourServices` | `Subnix/Info.plist` (array) | the 14 service types in `BonjourScanner.defaultServiceTypes` — keep them in sync |
 | `NSLocalNetworkUsageDescription` | `INFOPLIST_KEY_…` build setting | user-facing reason string |
 
-macOS sandbox (`Octet/Octet.entitlements`, applied via
+macOS sandbox (`Subnix/Subnix.entitlements`, applied via
 `CODE_SIGN_ENTITLEMENTS[sdk=macosx*]`):
 
 - `com.apple.security.app-sandbox` = true
@@ -84,8 +84,8 @@ converted verbatim.
 
 - **Source:** `https://standards-oui.ieee.org/oui/oui.csv` (the public MA-L
   registry).
-- **Bundled file:** `Octet/oui-mal.tsv` (~39.5k assignments, ~1.2 MB). Picked
-  up automatically by the synchronized `Octet` group → Copy Bundle Resources;
+- **Bundled file:** `Subnix/oui-mal.tsv` (~39.5k assignments, ~1.2 MB). Picked
+  up automatically by the synchronized `Subnix` group → Copy Bundle Resources;
   read at runtime via `Bundle.main`, parsed once into `OUILookup.shared`.
 - **Refreshing:** re-download `oui.csv`, keep `Registry == MA-L` rows, and emit
   `Assignment<TAB>Organization Name` (collapsing internal whitespace) over the
@@ -97,7 +97,7 @@ converted verbatim.
 
 ### What the engine expects
 
-A UTF-8 file **`oui-mal.tsv`** added to the `Octet` target (so it lands in the
+A UTF-8 file **`oui-mal.tsv`** added to the `Subnix` target (so it lands in the
 app bundle). One assignment per line, `#` comments and blank lines ignored:
 
 ```
@@ -126,5 +126,5 @@ byte; supporting those needs a longer key + mask and is a later schema bump.
    down (the full MA-L list is ~35k rows / a few MB).
 
 **Decision needed:** which source, full vs. trimmed, and whether the license
-permits bundling. Drop the converted `oui-mal.tsv` into `Octet/` and add it to
+permits bundling. Drop the converted `oui-mal.tsv` into `Subnix/` and add it to
 the target — the engine and UI pick it up with no code changes.

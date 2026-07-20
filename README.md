@@ -1,4 +1,4 @@
-# Octet
+# Subnix
 
 A local-only network toolkit for iOS 17+ and macOS 14+ (native, multiplatform
 SwiftUI, Swift 6 language mode).
@@ -71,32 +71,32 @@ light and a warm-dark variant). With Swift asset-symbol generation on, every set
 is exposed as a semantic token usable in any style position — no hex in views:
 
 ```swift
-Text(value).foregroundStyle(.octetInk)        // primary text
-Text(label).foregroundStyle(.octetMuted)      // secondary text
+Text(value).foregroundStyle(.subnixInk)        // primary text
+Text(label).foregroundStyle(.subnixMuted)      // secondary text
 Circle().fill(.statusOnline)                  // status
-.background(.octetSurface)                     // cards/rows
+.background(.subnixSurface)                     // cards/rows
 ```
 
-Tokens: `.octetPaper`, `.octetSurface`, `.octetHairline`, `.octetInk`,
-`.octetMuted`, `.octetAccent`, `.octetAccentDeep`, `.octetTint`, `.statusOnline`,
+Tokens: `.subnixPaper`, `.subnixSurface`, `.subnixHairline`, `.subnixInk`,
+`.subnixMuted`, `.subnixAccent`, `.subnixAccentDeep`, `.subnixTint`, `.statusOnline`,
 `.statusOffline`, `.statusTimeout`, `.statusError`.
 
 `ResultRow` is wired as the reference example. **Roll-out:** screen by screen,
-replace ad-hoc styles with tokens — `.secondary` → `.octetMuted`, the orange
+replace ad-hoc styles with tokens — `.secondary` → `.subnixMuted`, the orange
 warning labels → `.statusTimeout`, port/ping status text → `.statusOnline` /
-`.statusError`, and set `.octetPaper` as the list/form background with
-`.octetSurface` rows. Set the app `.tint(.octetAccent)` once at the `RootView`
+`.statusError`, and set `.subnixPaper` as the list/form background with
+`.subnixSurface` rows. Set the app `.tint(.subnixAccent)` once at the `RootView`
 level to recolor controls globally.
 
 ## Building & testing
 
 ```sh
 # macOS
-xcodebuild -scheme Octet -destination 'platform=macOS' build
+xcodebuild -scheme Subnix -destination 'platform=macOS' build
 # iOS simulator
-xcodebuild -scheme Octet -destination 'platform=iOS Simulator,name=iPhone 17' build
+xcodebuild -scheme Subnix -destination 'platform=iOS Simulator,name=iPhone 17' build
 # Tests (Swift Testing)
-xcodebuild -scheme Octet -destination 'platform=macOS' test
+xcodebuild -scheme Subnix -destination 'platform=macOS' test
 ```
 
 The macOS build is sandboxed with client-networking only; see

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Regenerate Octet/oui-mal.tsv from the official IEEE MA-L (OUI) registry.
+Regenerate Subnix/oui-mal.tsv from the official IEEE MA-L (OUI) registry.
 
 Run before a release to refresh the bundled MAC-vendor database. The app stays
 fully offline — this only regenerates the file that ships inside the bundle.
@@ -21,7 +21,7 @@ import urllib.request
 
 SOURCE = "https://standards-oui.ieee.org/oui/oui.csv"
 MIN_ROWS = 10_000  # sanity floor — refuse to overwrite with a truncated/garbage file
-DEFAULT_OUT = os.path.join(os.path.dirname(__file__), "..", "Octet", "oui-mal.tsv")
+DEFAULT_OUT = os.path.join(os.path.dirname(__file__), "..", "Subnix", "oui-mal.tsv")
 
 
 def load(src: str) -> str:
