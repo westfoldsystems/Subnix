@@ -1,12 +1,11 @@
 <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-  <!-- Subnix app icon — Mark D (four cells), honey colorway.
+  <!-- Subnix app icon — CIDR slash. A honey "/" (the subnet notation) over dark
+       ink, flanked by two paper node dots: two hosts split by a prefix.
        Full-bleed, opaque, square: iOS applies the corner mask itself.
-       Do NOT pre-round corners or add transparency for the iOS icon. -->
-  <rect width="1024" height="1024" fill="#E89A2B"/>
-  <g>
-    <rect x="378" y="161" width="268" height="140" rx="39" fill="#FFFCF5"/>
-    <rect x="378" y="348" width="268" height="140" rx="39" fill="#FFFCF5"/>
-    <rect x="378" y="536" width="268" height="140" rx="39" fill="#FFFCF5"/>
-    <rect x="378" y="723" width="268" height="140" rx="39" fill="#1F1B16"/>
-  </g>
+       Do NOT pre-round corners or add transparency for the iOS icon.
+       This SVG is the design reference; render_icon.swift produces the PNGs. -->
+  <rect width="1024" height="1024" fill="#1F1B16"/>
+  <line x1="287" y1="737" x2="737" y2="287" stroke="#E89A2B" stroke-width="148" stroke-linecap="round"/>
+  <circle cx="307" cy="307" r="47" fill="#FAF7F1"/>
+  <circle cx="717" cy="717" r="47" fill="#FAF7F1"/>
 </svg>
