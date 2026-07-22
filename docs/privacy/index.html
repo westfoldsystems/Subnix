@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subnix — Privacy Policy</title>
+<meta name="description" content="Subnix privacy policy. Subnix collects nothing: no accounts, no analytics, no tracking.">
+<style>
+  :root{
+    --bg:#faf7f1; --surface:#ffffff; --text:#1f1b16; --muted:#6b645a;
+    --accent:#e89a2b; --accent-deep:#b9741a; --hairline:#e6dfd2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#17140f; --surface:#201c16; --text:#f2ede3; --muted:#a89f90;
+      --accent:#e89a2b; --accent-deep:#f0ad4c; --hairline:#332d24;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    padding:40px 24px;
+  }
+  .wrap{max-width:680px; margin:0 auto}
+  header{display:flex; align-items:center; gap:12px; margin-bottom:8px}
+  header .mark{border-radius:10px; flex:0 0 auto}
+  header .brand{font-weight:700; font-size:18px; letter-spacing:-.01em}
+  .kicker{color:var(--accent-deep); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.08em; margin:22px 0 2px}
+  h1{font-size:30px; letter-spacing:-.02em; margin:0 0 4px}
+  .updated{color:var(--muted); font-size:14px; margin:0 0 28px}
+  h2{font-size:19px; letter-spacing:-.01em; margin:30px 0 8px; padding-top:14px; border-top:1px solid var(--hairline)}
+  p{margin:0 0 14px}
+  ul{margin:0 0 14px; padding-left:22px}
+  li{margin:0 0 8px}
+  a{color:var(--accent-deep)}
+  strong{font-weight:650}
+  .back{display:inline-block; margin-top:34px; color:var(--muted); text-decoration:none; font-size:14px}
+  .back:hover{color:var(--accent-deep)}
+  footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--hairline); color:var(--muted); font-size:13px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <svg class="mark" viewBox="0 0 100 100" width="34" height="34" role="img" aria-label="Subnix">
+        <rect width="100" height="100" rx="22.37" fill="#1f1b16"/>
+        <line x1="28" y1="72" x2="72" y2="28" stroke="#e89a2b" stroke-width="14.5" stroke-linecap="round"/>
+        <circle cx="30" cy="30" r="4.6" fill="#faf7f1"/>
+        <circle cx="70" cy="70" r="4.6" fill="#faf7f1"/>
+      </svg>
+      <span class="brand">Subnix</span>
+    </header>
+
+    <p class="kicker">Privacy Policy</p>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: 2026-07-03</p>
+
+    <p>Subnix is a network toolkit that runs on your device. It is built to be private by default.</p>
+
+    <h2>What we collect</h2>
+    <p><strong>Nothing.</strong> Subnix has no user accounts, no analytics, no advertising, no tracking, and no third-party SDKs. The developer receives no data about you or your usage.</p>
+
+    <h2>Network connections</h2>
+    <p>Subnix is an offline-first app. Most tools (the calculators, converters, and MAC vendor lookup) work with no network at all. Some tools make network connections, and every one of them is initiated by you:</p>
+    <ul>
+      <li><strong>Diagnostic tools</strong> (Ping, TCP Port Check, HTTP Header Inspector, TLS Certificate Inspector, DNS Lookup) connect only to the host or resolver you enter.</li>
+      <li><strong>What's My IP</strong> contacts a public reflector (Cloudflare, falling back to ipify) only when you tap to reveal your public IP.</li>
+      <li><strong>MAC Vendor Lookup &rarr; Update</strong> downloads the public IEEE OUI registry only when you tap Update.</li>
+      <li><strong>Bonjour Discovery</strong> and <strong>LAN Scanner</strong> communicate only on your local network, to discover devices and services. Nothing about these features leaves your LAN.</li>
+    </ul>
+    <p>These connections go directly from your device to the destination you chose. Subnix does not route them through the developer, and does not send your data to any analytics or advertising service. Third parties you connect to (a website you inspect, a DNS resolver, the public-IP reflector, or IEEE) handle your request under their own policies.</p>
+
+    <h2>Data storage</h2>
+    <p>Any data Subnix stores (such as a downloaded copy of the OUI database, or your appearance preference) stays on your device. Copied results use your device's clipboard at your request.</p>
+
+    <h2>Children</h2>
+    <p>Subnix collects no data and is suitable for all ages.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the updated version will be posted here with a new date.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy: <a href="mailto:supportsubnix@gmail.com">supportsubnix@gmail.com</a></p>
+
+    <a class="back" href="../">&larr; Back to Subnix</a>
+    <footer>Subnix &middot; Privacy-first network toolkit for iPhone, iPad, and Mac.</footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subnix — Support</title>
+<meta name="description" content="Get help with Subnix, the privacy-first network toolkit for iPhone, iPad, and Mac.">
+<style>
+  :root{
+    --bg:#faf7f1; --surface:#ffffff; --text:#1f1b16; --muted:#6b645a;
+    --accent:#e89a2b; --accent-deep:#b9741a; --hairline:#e6dfd2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#17140f; --surface:#201c16; --text:#f2ede3; --muted:#a89f90;
+      --accent:#e89a2b; --accent-deep:#f0ad4c; --hairline:#332d24;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    padding:40px 24px;
+  }
+  .wrap{max-width:680px; margin:0 auto}
+  header{display:flex; align-items:center; gap:12px; margin-bottom:8px}
+  header .mark{border-radius:10px; flex:0 0 auto}
+  header .brand{font-weight:700; font-size:18px; letter-spacing:-.01em}
+  .kicker{color:var(--accent-deep); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.08em; margin:22px 0 2px}
+  h1{font-size:30px; letter-spacing:-.02em; margin:0 0 6px}
+  .lead{color:var(--muted); font-size:17px; margin:0 0 28px}
+  h2{font-size:19px; letter-spacing:-.01em; margin:30px 0 8px; padding-top:14px; border-top:1px solid var(--hairline)}
+  p{margin:0 0 14px}
+  a{color:var(--accent-deep)}
+  .contact{
+    display:flex; align-items:center; gap:14px; background:var(--surface);
+    border:1px solid var(--hairline); border-radius:14px; padding:18px 20px; margin:6px 0 4px;
+  }
+  .contact .label{color:var(--muted); font-size:13px; text-transform:uppercase; letter-spacing:.06em; margin:0 0 2px}
+  .contact .email{font-size:18px; font-weight:600; text-decoration:none; color:var(--text)}
+  .contact .email:hover{color:var(--accent-deep)}
+  ul{margin:0 0 14px; padding-left:22px}
+  li{margin:0 0 8px}
+  .back{display:inline-block; margin-top:34px; color:var(--muted); text-decoration:none; font-size:14px}
+  .back:hover{color:var(--accent-deep)}
+  footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--hairline); color:var(--muted); font-size:13px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <svg class="mark" viewBox="0 0 100 100" width="34" height="34" role="img" aria-label="Subnix">
+        <rect width="100" height="100" rx="22.37" fill="#1f1b16"/>
+        <line x1="28" y1="72" x2="72" y2="28" stroke="#e89a2b" stroke-width="14.5" stroke-linecap="round"/>
+        <circle cx="30" cy="30" r="4.6" fill="#faf7f1"/>
+        <circle cx="70" cy="70" r="4.6" fill="#faf7f1"/>
+      </svg>
+      <span class="brand">Subnix</span>
+    </header>
+
+    <p class="kicker">Support</p>
+    <h1>How can we help?</h1>
+    <p class="lead">Subnix is a privacy-first network toolkit for iPhone, iPad, and Mac. Questions, bug reports, and feature requests are all welcome.</p>
+
+    <h2>Email</h2>
+    <div class="contact">
+      <svg viewBox="0 0 100 100" width="40" height="40" aria-hidden="true">
+        <rect width="100" height="100" rx="22.37" fill="#1f1b16"/>
+        <line x1="28" y1="72" x2="72" y2="28" stroke="#e89a2b" stroke-width="14.5" stroke-linecap="round"/>
+        <circle cx="30" cy="30" r="4.6" fill="#faf7f1"/>
+        <circle cx="70" cy="70" r="4.6" fill="#faf7f1"/>
+      </svg>
+      <div>
+        <p class="label">Contact</p>
+        <a class="email" href="mailto:supportsubnix@gmail.com">supportsubnix@gmail.com</a>
+      </div>
+    </div>
+    <p>We aim to reply within a few business days.</p>
+
+    <h2>Before you write</h2>
+    <p>A few things that may answer your question faster:</p>
+    <ul>
+      <li><strong>Does Subnix collect my data?</strong> No. Subnix has no accounts, analytics, or tracking &mdash; see the <a href="../privacy/">Privacy Policy</a>.</li>
+      <li><strong>Ping shows 100% loss.</strong> ICMP is restricted in some sandboxes; Subnix defaults to a TCP connect mode. Use the TCP option, or the &ldquo;Retry with TCP&rdquo; prompt.</li>
+      <li><strong>LAN Scanner or Bonjour finds nothing.</strong> Grant Local Network access when prompted, and make sure you're on Wi-Fi rather than cellular.</li>
+    </ul>
+
+    <h2>Bug reports &amp; feature requests</h2>
+    <p>You're also welcome to open an issue on <a href="https://github.com/westfoldsystems/Subnix/issues">GitHub</a>. Please include your device, OS version, and the tool involved.</p>
+
+    <a class="back" href="../">&larr; Back to Subnix</a>
+    <footer>Subnix &middot; Privacy-first network toolkit for iPhone, iPad, and Mac.</footer>
+  </div>
+</body>
+</html>
